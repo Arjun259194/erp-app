@@ -1,0 +1,14 @@
+services:
+  database:
+    image: "postgres:latest"
+    environment:
+      POSTGRES_USER: user1
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: erp-app
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+         - 15432:5432
+  
+volumes:
+  postgres_data:
