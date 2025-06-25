@@ -1,7 +1,7 @@
 "use server"
 
 import JWToken from "@/lib/auth"
-import prisma from "@/lib/database"
+import prisma, { DB } from "@/lib/database"
 import BcryptPasswordHasher from "@/lib/hash"
 import { ServerAction } from "@/types"
 import { z } from "zod"
@@ -23,11 +23,7 @@ export const resetPassword: ServerAction = async form => {
   if (!payload)
     throw new Error("Not valid token, try again")
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: payload.data.id
-    }
-  })
+  const user = await DB.FindUserById(payload.data.id)
 
   if (!user) throw new Error("404 - User not found")
 
@@ -36,10 +32,8 @@ export const resetPassword: ServerAction = async form => {
   const passHash = await hasher.hash(password)
 
   try {
-    await prisma.user.update({
-      where: { id: payload.data.id }, data: {
-        password: passHash
-      }
+    await DB.UpdateUserById(payload.data.id, {
+      password: passHash
     })
 
     return

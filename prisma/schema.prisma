@@ -103,24 +103,26 @@ enum CommunicationType {
 // --- Authentication & Users ---
 
 model User {
-  id                    String                @id @default(cuid())
-  name                  String
-  email                 String                @unique
-  password              String // hashed
-  status                UserStatus            @default(Active)
-  createdAt             DateTime              @default(now())
-  updatedAt             DateTime              @updatedAt
+  id       String     @id @default(cuid())
+  name     String
+  email    String     @unique
+  password String // hashed
+  status   UserStatus @default(Active)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   roles                 UserRoleAssignments[]
   sessions              Session[]
   companies             UserCompanyRole[]
   employees             Employee[]
-  assignedTasks         Task[]                @relation("TaskAssignee")
-  createdTasks          Task[]                @relation("TaskCreator")
-  tickets               Ticket[]              @relation("TicketCreator")
+  assignedTasks         Task[]                  @relation("TaskAssignee")
+  createdTasks          Task[]                  @relation("TaskCreator")
+  tickets               Ticket[]                @relation("TicketCreator")
   communicationLogs     CommunicationLog[]
-  createdPayments       PaymentEntry[]        @relation("PaidByUser")
-  createdStockEntries   StockEntry[]          @relation("StockEntryCreator")
-  createdJournalEntries JournalEntry[]        @relation("JournalEntryCreator")
+  createdPayments       PaymentEntry[]          @relation("PaidByUser")
+  createdStockEntries   StockEntry[]            @relation("StockEntryCreator")
+  createdJournalEntries JournalEntry[]          @relation("JournalEntryCreator")
   PurchaseRequest       PurchaseRequest[]
   PurchaseOrder         PurchaseOrder[]
   GoodsReceipt          GoodsReceipt[]
@@ -131,6 +133,18 @@ model User {
   Ticket                Ticket[]
   AuditLog              AuditLog[]
   ReportTemplate        ReportTemplate[]
+  ForgotPasswordRequest ForgotPasswordRequest[]
+}
+
+model ForgotPasswordRequest {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  token String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model UserRoleAssignments {

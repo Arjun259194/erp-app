@@ -1,8 +1,9 @@
 import { MessageDialog } from "@/components/MessageDialog"
+import { Topbar } from "@/components/topbar/Topbar"
 
 export default async function page() {
   return <>
     <MessageDialog />
-    <h1>Hello from dashboard</h1>
+    <Topbar />
   </>
 }

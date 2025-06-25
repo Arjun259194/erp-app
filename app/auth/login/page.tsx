@@ -7,12 +7,12 @@ export default function page() {
   return (
     <>
       <MessageDialog />
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-background px-4">
         <div className="flex flex-col w-full md:w-1/3 items-center gap-6">
           {/* Logo and Title */}
           <div className="text-center">
-            <div className="text-4xl font-bold mb-2">ERP</div>
-            <h1 className="text-xl font-semibold text-gray-800">Login to ERPAPP</h1>
+            <div className="text-4xl text-foreground font-bold mb-2">ERP</div>
+            <h1 className="text-xl font-semibold text-secondary-foreground">Login to ERPAPP</h1>
           </div>
 
           {/* Card Container */}

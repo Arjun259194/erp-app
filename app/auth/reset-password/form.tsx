@@ -14,7 +14,7 @@ interface FormInputs {
 
 type Props = {
   token: string
-  action: ServerAction<never>
+  action: ServerAction
 }
 
 export default function ResetPasswordForm({ token, action }: Props) {

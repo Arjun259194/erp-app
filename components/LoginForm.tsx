@@ -50,7 +50,7 @@ export function LoginForm({ loginAction, ...props }: Props) {
       error: (err) => err.message || "Login failed",
       success: (data) => {
         const message = encodeURIComponent(`Welcome back ${data.name}! You have successfully logged in`)
-        router.push(`/dashboard?message=${message}`)
+        router.push(`/home?message=${message}`)
         return "logged in"
       }
     })

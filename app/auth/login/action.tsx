@@ -2,7 +2,7 @@
 
 import ForgotPasswordEmail from "@/emails/ForgotPassword"
 import JWToken, { Payload } from "@/lib/auth"
-import prisma from "@/lib/database"
+import prisma, { DB } from "@/lib/database"
 import SMTPGmailService, { defMailCred, MailBuilder } from "@/lib/email"
 import BcryptPasswordHasher from "@/lib/hash"
 import { loginSchema } from "@/lib/schemas"
@@ -23,11 +23,7 @@ export const handleLogin: ServerAction<{ name: string }> = async formdata => {
 
   const { email, password } = result.data
 
-  const user = await prisma.user.findFirst({
-    where: {
-      email
-    }
-  })
+  const user = await DB.FindUserByEmail(email)
 
   if (!user) throw new Error("No user found")
 
@@ -66,10 +62,15 @@ export const handleForgotPass: ServerAction = async formdata => {
 
   const email = safeEmail.data
 
-  const result = await prisma.user.findFirst({ where: { email } });
+  const result = await DB.FindUserByEmail(email)
 
   if (!result)
     throw new Error("Email doesn't exists, check credentials")
+
+  const recent = await DB.FindLatestForgotPasswordRequest(result.id)
+
+  if (recent)
+    throw new Error("Reset link already sent recently. Please wait a few minutes.")
 
   const mailer = SMTPGmailService.getInstance(defMailCred)
   const jwtoken = JWToken.getInstance()
@@ -78,12 +79,19 @@ export const handleForgotPass: ServerAction = async formdata => {
 
   const token = jwtoken.serialize(payload, "10 Minutes")
 
+  try {
+    await DB.CreateNewForgotPasswordRequest(result.id, token)
+  } catch (err) {
+    console.error(err)
+    throw new Error("Something went wrong")
+  }
+
   const url = new URL("/auth/reset-password", process.env.NEXT_PUBLIC_APP_URL)
   url.searchParams.set("token", token)
 
   const mailbody: string = await render(
     <ForgotPasswordEmail resetUrl={url.toString()} username={result.name} />
-  ); // will add the actual api url when it's ready
+  );
 
   const mailConfig = await MailBuilder
     .create()

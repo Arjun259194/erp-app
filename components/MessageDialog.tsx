@@ -37,7 +37,7 @@ export function MessageDialog() {
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Notice</DialogTitle>
+          <DialogTitle>Message</DialogTitle>
         </DialogHeader>
         <div className="text-sm text-muted-foreground">{message}</div>
         <DialogFooter>
