@@ -34,15 +34,15 @@ export default function ForgotPasswordEmail({
 
         <Body className="bg-[#f9fafb] text-slate-900 font-sans">
           <Container className="max-w-md mx-auto bg-white p-6 border border-slate-200 rounded-md shadow-sm">
-            
+
             {/* Logo */}
             <Section className="mb-6 text-center">
               <Img
-                src="https://yourcompany.com/logo.png"
+                src="https://i.postimg.cc/fLcG77T4/logo.png"
                 alt="YourCompany Logo"
                 width="120"
-                height="40"
-                className="mx-auto"
+                height="120"
+                className="mx-auto rounded-full aspect-square bg-cover"
               />
             </Section>
 

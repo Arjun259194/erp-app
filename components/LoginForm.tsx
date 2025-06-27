@@ -181,7 +181,7 @@ interface LoginWithEmailProps {
   action: ServerAction
 }
 
-const LoginWithEmail = ({ defaultEmail }: LoginWithEmailProps) => {
+const LoginWithEmail = ({ defaultEmail, action }: LoginWithEmailProps) => {
   const [email, setEmail] = React.useState("")
 
   React.useEffect(() => {
@@ -195,7 +195,18 @@ const LoginWithEmail = ({ defaultEmail }: LoginWithEmailProps) => {
     if (!result.success) return toast.error(result.error.issues[0].message)
 
     const { data: safeEmail } = result
-    toast.success(safeEmail)
+
+    const form = new FormData()
+
+    form.set("email", safeEmail)
+
+    const promise = action(form)
+
+    toast.promise(promise, {
+      loading: "Sending email...",
+      error: (err) => err.message || "Something went wrong",
+      success: () => "Email send, check you inbox"
+    })
   }
 
   return <Dialog>

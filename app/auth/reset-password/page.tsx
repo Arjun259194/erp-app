@@ -3,7 +3,7 @@ import ResetPasswordForm from "./form"
 import JWToken from "@/lib/auth"
 import { Card, CardContent } from "@/components/ui/card"
 import { resetPassword as handleResetPassword } from "./action"
-import prisma, { DB } from "@/lib/database"
+import { DB } from "@/lib/database"
 
 
 type Props = {
@@ -23,7 +23,7 @@ export default async function page({ searchParams }: Props) {
     return redirect(`/auth/login?message=${encodeURIComponent("Invalid or expired token, try again")}`)
   }
 
-  const request = await DB.FindForgotPassReq(payload.data.id, token)
+  const request = await DB.FindLatestForgotPasswordRequest(payload.data.id)
 
   if (!request) return redirect(`/auth/login?message=${encodeURIComponent("No request found")}`)
 

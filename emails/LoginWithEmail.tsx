@@ -35,11 +35,11 @@ export default function LoginEmail({ username, loginUrl }: LoginEmailProps) {
             {/* Logo section */}
             <Section className="mb-6 text-center">
               <Img
-                src="https://yourcompany.com/logo.png"
+                src="https://i.postimg.cc/fLcG77T4/logo.png"
                 alt="YourCompany Logo"
                 width="120"
-                height="40"
-                className="mx-auto"
+                height="120"
+                className="mx-auto rounded-full aspect-square bg-cover"
               />
             </Section>
 

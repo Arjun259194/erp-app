@@ -100,6 +100,11 @@ enum CommunicationType {
   Other
 }
 
+
+model GlobalSettings {
+  id String @id @default(cuid())
+}
+
 // --- Authentication & Users ---
 
 model User {
@@ -134,6 +139,7 @@ model User {
   AuditLog              AuditLog[]
   ReportTemplate        ReportTemplate[]
   ForgotPasswordRequest ForgotPasswordRequest[]
+  EmailLoginRequest     EmailLoginRequest[]
 }
 
 model ForgotPasswordRequest {
@@ -141,7 +147,14 @@ model ForgotPasswordRequest {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
-  token String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EmailLoginRequest {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
