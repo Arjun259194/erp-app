@@ -2,8 +2,14 @@ import { Card, CardContent } from "@/components/ui/card"
 import { LoginForm } from "@/components/LoginForm"
 import { handleForgotPass, handleLogin, handleLoginWithEmail } from "./action"
 import { MessageDialog } from "@/components/MessageDialog"
+import { Settings } from "@/lib/settings"
+import { gotError } from "@/lib/redirects"
 
-export default function page() {
+export default async function page() {
+  const settings = await Settings.getInstance()
+  if (!settings) return gotError("Unable to load gloabal settings", "something went wrong when loading page")
+  const settingsState = settings.getState()
+  console.table(settingsState)
   return (
     <>
       <MessageDialog />
@@ -19,6 +25,7 @@ export default function page() {
           <Card className="w-full">
             <CardContent className="p-6 space-y-4">
               <LoginForm
+                publicRegistraction={settingsState.public_registration} // check latest
                 loginWithEmailAction={handleLoginWithEmail}
                 forgotPasswordAction={handleForgotPass}
                 loginAction={handleLogin}

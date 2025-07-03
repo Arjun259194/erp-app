@@ -9,7 +9,9 @@ const envSchema = z.object({
   EMAIL_TOKEN: z.string().nonempty(),
   EMAIL_ADDRESS: z.string().email().nonempty(),
   PASSWORD_SALT_ROUNDS: z.string().min(1).nonempty(),
-  NEXT_PUBLIC_APP_URL: z.string().url()
+  NEXT_PUBLIC_APP_URL: z.string().url(),
+  ADMIN_EMAIL: z.string().email(),
+  ADMIN_PASS: z.string().min(8)
 })
 
 declare global {

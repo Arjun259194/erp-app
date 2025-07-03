@@ -1,8 +1,19 @@
-import prisma from "."
+import { User } from "@/generated/prisma"
+import { prisma } from "."
+import BcryptPasswordHasher from "../hash"
 
 type UserUpdateParam = Parameters<typeof prisma.user.update>[0]['data']
 
 export const user = {
+  async FetchAllUsers() {
+    return await prisma.user.findMany({
+      where: {
+        NOT: [{
+          email: process.env.ADMIN_EMAIL
+        }]
+      }
+    })
+  },
   async UpdateUserById(id: string, update: UserUpdateParam) {
     await prisma.user.update({
       where: { id }, data: update
@@ -24,4 +35,16 @@ export const user = {
       }
     })
   },
+
+  async CreateUser(data: Parameters<typeof prisma.user.create>[0]['data']) {
+    const hasher = BcryptPasswordHasher.getInstance()
+    const hashPass = await hasher.hash(data.password)
+
+    await prisma.user.create({
+      data: {
+        ...data, 
+        password: hashPass
+      }
+    })
+  }
 }

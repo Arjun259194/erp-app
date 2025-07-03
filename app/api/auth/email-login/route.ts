@@ -1,4 +1,4 @@
-import JWToken from "@/lib/auth";
+import { JWToken } from "@/lib/auth/jwt";
 import { DB } from "@/lib/database";
 import { gotError } from "@/lib/redirects";
 import { NextRequest, NextResponse } from "next/server";
@@ -24,6 +24,8 @@ export async function GET(request: NextRequest) {
   if (!req)
     return gotError("Request expired", "Your email login request is expired, try again")
 
+  const exp = Date.now() + 60 * 60 * 24
+
   const response = NextResponse.redirect(new URL('/home', request.url));
 
   response.cookies.set({
@@ -32,7 +34,8 @@ export async function GET(request: NextRequest) {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     path: '/',
-    maxAge: 60 * 60 * 24 // 1 day
+    maxAge: exp,
+    expires: new Date(exp)
   })
 
   await DB.ClearAllPastEmailLoginRequest(req.id, user.id)

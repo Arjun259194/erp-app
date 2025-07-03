@@ -24,21 +24,22 @@ import {
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Topbar } from "./topbar/Topbar";
+import { User } from "@/generated/prisma";
 
 // ✅ Your recursive item type
 export type SideBarItem =
   | {
-      name: string;
-      Icon: any;
-      children: SideBarItem[];
-      link?: never;
-    }
+    name: string;
+    Icon: any;
+    children: SideBarItem[];
+    link?: never;
+  }
   | {
-      name: string;
-      Icon: any;
-      link: string;
-      children?: never;
-    };
+    name: string;
+    Icon: any;
+    link: string;
+    children?: never;
+  };
 
 // ✅ Your sidebar data (unchanged)
 const sidebarItems: SideBarItem[] = [
@@ -81,16 +82,17 @@ const sidebarItems: SideBarItem[] = [
   { name: "Quality", Icon: ShieldCheck, link: "/quality" },
   { name: "Projects", Icon: KanbanSquare, link: "/projects" },
   { name: "Support", Icon: LifeBuoy, link: "/support" },
-  { name: "Settings", Icon: Settings, link: "/settings" },
+  { name: "ERP Settings", Icon: Settings, link: "/settings" }
 ];
 
 // ✅ Props
 interface Props {
   children: ReactNode;
+  user: User
 }
 
 // ✅ Main Layout Component
-export default function SideBarLayout({ children }: Props) {
+export default function SideBarLayout({ children, user }: Props) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -101,13 +103,14 @@ export default function SideBarLayout({ children }: Props) {
         <Button onClick={() => setIsOpen((prev) => !prev)} variant="ghost">
           {isOpen ? <ChevronsLeft /> : <ChevronsRight />}
         </Button>
+
         <h2 className="text-2xl font-semibold text-foreground ml-4">Welcome</h2>
       </div>
 
       {/* Sidebar + Main */}
       <div className="flex flex-1 min-h-0">
-        <Sidebar items={sidebarItems} isOpen={isOpen} />
-        <main className="flex-1 overflow-y-auto p-4 bg-green-500/50">
+        <Sidebar user={user} items={sidebarItems} isOpen={isOpen} />
+        <main className="flex-1 overflow-y-auto p-4">
           {children}
         </main>
       </div>
@@ -116,12 +119,11 @@ export default function SideBarLayout({ children }: Props) {
 }
 
 // ✅ Sidebar Component
-function Sidebar({ isOpen, items }: { isOpen: boolean; items: SideBarItem[] }) {
+function Sidebar({ isOpen, items, user }: { isOpen: boolean; user: User; items: SideBarItem[] }) {
   return (
     <aside
-      className={`${
-        isOpen ? "w-64" : "hidden"
-      } border-r overflow-y-auto px-2 py-4 bg-background`}
+      className={`${isOpen ? "w-64" : "hidden"
+        } border-r overflow-y-auto px-2 py-4 bg-background`}
     >
       <Items items={items} />
     </aside>

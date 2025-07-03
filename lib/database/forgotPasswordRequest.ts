@@ -1,4 +1,4 @@
-import prisma from "."
+import {prisma} from "."
 
 export const forgotPassword = {
   async FindLatestForgotPasswordRequest(userId: string) {

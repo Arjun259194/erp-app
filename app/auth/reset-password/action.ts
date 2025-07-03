@@ -1,6 +1,6 @@
 "use server"
 
-import JWToken from "@/lib/auth"
+import { JWToken } from "@/lib/auth"
 import { DB } from "@/lib/database"
 import BcryptPasswordHasher from "@/lib/hash"
 import { ServerAction } from "@/types"

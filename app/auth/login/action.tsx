@@ -2,7 +2,8 @@
 
 import ForgotPasswordEmail from "@/emails/ForgotPassword"
 import LoginEmail from "@/emails/LoginWithEmail"
-import JWToken, { Payload } from "@/lib/auth"
+import { JWToken } from "@/lib/auth/jwt"
+import { Payload } from "@/lib/auth/Payload"
 import { DB } from "@/lib/database"
 import SMTPGmailService, { defMailCred, MailBuilder } from "@/lib/email"
 import BcryptPasswordHasher from "@/lib/hash"
@@ -25,7 +26,10 @@ export const handleLogin: ServerAction<{ name: string }> = async formdata => {
   const { email, password } = result.data
 
   const user = await DB.FindUserByEmail(email)
+
   if (!user) throw new Error("No user found")
+  if (user.status === "Suspended")
+    throw new Error("You have bees suspended by admin")
 
   const hasher = BcryptPasswordHasher.getInstance()
   const isMatch = await hasher.compare(password, user.password)
@@ -40,6 +44,7 @@ export const handleLogin: ServerAction<{ name: string }> = async formdata => {
   })
 
   const token = jwtoken.serialize(payload)
+  const exp = Date.now() + 60 * 60 * 24
 
   cookieStore.set({
     name: 'authToken',
@@ -47,7 +52,8 @@ export const handleLogin: ServerAction<{ name: string }> = async formdata => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     path: '/',
-    maxAge: 60 * 60 * 24 // 1 day
+    maxAge: exp,
+    expires: new Date(exp)
   })
 
   return { name: user.name }
@@ -60,23 +66,25 @@ export const handleForgotPass: ServerAction = async formdata => {
 
   const email = safeEmail.data
 
-  const result = await DB.FindUserByEmail(email)
-  if (!result)
+  const user = await DB.FindUserByEmail(email)
+  if (!user)
     throw new Error("Email doesn't exists, check credentials")
+  if (user.status === "Suspended")
+    throw new Error("You have bees suspended by admin")
 
-  const recent = await DB.FindLatestForgotPasswordRequest(result.id)
+  const recent = await DB.FindLatestForgotPasswordRequest(user.id)
   if (recent)
     throw new Error("Reset link already sent recently. Please wait a few minutes.")
 
   const mailer = SMTPGmailService.getInstance(defMailCred)
   const jwtoken = JWToken.getInstance()
 
-  const payload = new Payload({ id: result.id, email: result.email })
+  const payload = new Payload({ id: user.id, email: user.email })
 
   const token = jwtoken.serialize(payload, "5 Minutes")
 
   try {
-    await DB.CreateNewForgotPasswordRequest(result.id)
+    await DB.CreateNewForgotPasswordRequest(user.id)
   } catch (err) {
     console.error(err)
     throw new Error("Something went wrong")
@@ -86,12 +94,12 @@ export const handleForgotPass: ServerAction = async formdata => {
   url.searchParams.set("token", token)
 
   const mailbody: string = await render(
-    <ForgotPasswordEmail resetUrl={url.toString()} username={result.name} />
+    <ForgotPasswordEmail resetUrl={url.toString()} username={user.name} />
   );
 
   const mailConfig = await MailBuilder
     .create()
-    .to(result.email)
+    .to(user.email)
     .from("quesher4@gmail.com")
     .subject("Reset Password")
     .build(mailbody);
@@ -109,12 +117,14 @@ export const handleLoginWithEmail: ServerAction = async formdata => {
 
   const email = safeEmail.data
 
-  const result = await DB.FindUserByEmail(email)
+  const user = await DB.FindUserByEmail(email)
 
-  if (!result)
+  if (!user)
     throw new Error("Email doesn't exists, check credentials")
+  if (user.status === "Suspended")
+    throw new Error("You have bees suspended by admin")
 
-  const recent = await DB.FindLatestEmailLoginRequest(result.id)
+  const recent = await DB.FindLatestEmailLoginRequest(user.id)
 
   if (recent)
     throw new Error("Login link already sent recently. Please wait a few minutes.")
@@ -122,12 +132,12 @@ export const handleLoginWithEmail: ServerAction = async formdata => {
   const mailer = SMTPGmailService.getInstance(defMailCred)
   const jwtoken = JWToken.getInstance()
 
-  const payload = new Payload({ id: result.id, email: result.email })
+  const payload = new Payload({ id: user.id, email: user.email })
 
   const token = jwtoken.serialize(payload, "5 Minutes")
 
   try {
-    await DB.CreateNewEmailLoginRequest(result.id)
+    await DB.CreateNewEmailLoginRequest(user.id)
   } catch (err) {
     console.error(err)
     throw new Error("Something went wrong")
@@ -137,12 +147,12 @@ export const handleLoginWithEmail: ServerAction = async formdata => {
   url.searchParams.set("token", token)
 
   const mailbody: string = await render(
-    <LoginEmail loginUrl={url.toString()} username={result.name} />
+    <LoginEmail loginUrl={url.toString()} username={user.name} />
   );
 
   const mailConfig = await MailBuilder
     .create()
-    .to(result.email)
+    .to(user.email)
     .from("quesher4@gmail.com")
     .subject("Login to ERP-APP")
     .build(mailbody);

@@ -7,11 +7,11 @@ interface PasswordHasher {
 
 export default class BcryptPasswordHasher implements PasswordHasher {
   private static instance: BcryptPasswordHasher
-  private constructor(private salt: number = 12) { }
+  private constructor(private salt: number) { }
 
-  public static getInstance() {
+  public static getInstance(salt: number = 12) {
     if (!BcryptPasswordHasher.instance) {
-      BcryptPasswordHasher.instance = new BcryptPasswordHasher()
+      BcryptPasswordHasher.instance = new BcryptPasswordHasher(salt)
     }
     return BcryptPasswordHasher.instance
   }

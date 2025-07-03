@@ -1,5 +1,6 @@
-import JWToken from "@/lib/auth"
-import { cookies } from "next/headers"
+import { MessageDialog } from "@/components/MessageDialog"
+import SideBarLayout from "@/components/Sidebar"
+import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import type { ReactNode } from "react"
 
@@ -9,22 +10,17 @@ interface Props {
 }
 
 export default async function AuthorizedLayout({ children }: Props) {
-  const cookieStore = await cookies()
-  const token = cookieStore.get("authToken")?.value
+  const [user, error] = await auth()
+  if (error !== null) redirect("/auth/login?message=" + encodeURIComponent(error))
 
-  if (!token) {
-    redirect("/auth/login?message=" + encodeURIComponent("You must be logged in to access this page"))
-  }
+  console.log("User: ", user)
 
-  const auth = JWToken.getInstance()
-  const payload = auth.deserialize(token)
-
-  if (!payload) {
-    redirect("/auth/login?message=" + encodeURIComponent("Session expired or invalid. Please log in again."))
-  }
-
-  // You can also pass user info via context or props if needed
-
-  return <>{children}</>
+  return <>
+    <div className="h-screen">
+      <MessageDialog />
+      <SideBarLayout user={user}>
+        {children}
+      </SideBarLayout>
+    </div>
+  </>
 }
-

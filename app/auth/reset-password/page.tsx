@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import ResetPasswordForm from "./form"
-import JWToken from "@/lib/auth"
+import { JWToken } from "@/lib/auth"
 import { Card, CardContent } from "@/components/ui/card"
 import { resetPassword as handleResetPassword } from "./action"
 import { DB } from "@/lib/database"

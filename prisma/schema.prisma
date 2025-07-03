@@ -100,9 +100,9 @@ enum CommunicationType {
   Other
 }
 
-
 model GlobalSettings {
-  id String @id @default(cuid())
+  id                  Int     @id @unique @default(1)
+  public_registration Boolean @default(false)
 }
 
 // --- Authentication & Users ---
@@ -117,7 +117,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  roles                 UserRoleAssignments[]
+  role                  UserRole                @default(User)
   sessions              Session[]
   companies             UserCompanyRole[]
   employees             Employee[]
@@ -160,20 +160,20 @@ model EmailLoginRequest {
   updatedAt DateTime @updatedAt
 }
 
-model UserRoleAssignments {
-  id     String @id @default(cuid())
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  role      UserRole
-  createdAt DateTime @default(now())
-}
+// model UserRoleAssignments {
+//   id     String @id @default(cuid())
+//   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId String
+//
+//   role      UserRole
+//   createdAt DateTime @default(now())
+// }
 
 // Session or Token table for auth management
 model Session {
   id        String   @id @default(cuid())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
+  userId    String   @unique
   token     String   @unique
   createdAt DateTime @default(now())
   expiresAt DateTime

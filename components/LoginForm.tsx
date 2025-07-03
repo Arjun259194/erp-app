@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation"
 type LoginFormValues = z.infer<typeof loginSchema>
 
 type Props = {
+  publicRegistraction?: boolean
   loginAction: ServerAction<{ name: string }>,
   loginWithEmailAction: ServerAction,
   forgotPasswordAction: ServerAction,
@@ -107,9 +108,11 @@ export function LoginForm({ loginAction, ...props }: Props) {
 
       <LoginWithEmail action={props.loginWithEmailAction} defaultEmail={email} />
 
-      <div className="text-center text-sm text-muted-foreground">
-        <Link href="/auth/register">Haven't joined us yet?</Link>
-      </div>
+      {
+        !!props.publicRegistraction ? <div className="text-center text-sm text-muted-foreground">
+          <Link href="/auth/register">Haven't joined us yet?</Link>
+        </div> : null
+      }
     </form>
   )
 }
