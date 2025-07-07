@@ -7,3 +7,8 @@ export function gotError(title: string, message: string) {
   return redirect(`/gotError?title=${urlTitle}&message=${urlMessage}`);
 }
 
+export function loginRedirect(message: string) {
+  const msg = encodeURIComponent(message)
+  return redirect("/auth/login?message=" + msg)
+}
+

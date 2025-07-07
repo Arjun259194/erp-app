@@ -1,4 +1,3 @@
-import { User } from "@/generated/prisma"
 import { prisma } from "."
 import BcryptPasswordHasher from "../hash"
 
@@ -40,11 +39,17 @@ export const user = {
     const hasher = BcryptPasswordHasher.getInstance()
     const hashPass = await hasher.hash(data.password)
 
-    await prisma.user.create({
+    return await prisma.user.create({
       data: {
-        ...data, 
+        ...data,
         password: hashPass
       }
+    })
+  },
+
+  async DeleteUserById(id: string) {
+    await prisma.user.delete({
+      where: { id }
     })
   }
 }

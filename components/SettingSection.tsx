@@ -27,12 +27,11 @@ export function SettingsSection({ title, options, className }: SettingsSectionPr
     <section className={cn("mb-8", className)}>
       <h2 className="text-lg font-semibold mb-4">{title}</h2>
       <div className="space-y-6 grid grid-cols-2">
-        {options.map((opt) => (
-          <Tooltip>
-            <TooltipTrigger>Hover</TooltipTrigger>
-            <TooltipContent>
+        {options.map((opt, idx) => (
+          <Tooltip key={idx}>
+            <TooltipTrigger asChild>
               <div key={opt.label} className="flex p-2 shadow-md shadow-accent border border-border rounded-md items-center justify-between">
-                <div>
+                <div className="text-start space-y-1">
                   <div className="text-sm font-medium">{opt.label}</div>
                   {opt.description && (
                     <div className="text-xs text-muted-foreground">{opt.description}</div>
@@ -56,6 +55,9 @@ export function SettingsSection({ title, options, className }: SettingsSectionPr
                   </Select>
                 )}
               </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              {opt.tooltipText}
             </TooltipContent>
           </Tooltip>
         ))}

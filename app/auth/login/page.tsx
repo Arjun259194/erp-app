@@ -9,7 +9,7 @@ export default async function page() {
   const settings = await Settings.getInstance()
   if (!settings) return gotError("Unable to load gloabal settings", "something went wrong when loading page")
   const settingsState = settings.getState()
-  console.table(settingsState)
+
   return (
     <>
       <MessageDialog />

@@ -5,6 +5,7 @@ import UserTable from "./UserTable"
 import UserDialog from "./UserDialog"
 import UserToolbar from "./UserToolbar"
 import { useUserAdmin } from "@/hook/useUserAdmin"
+import { createUser, fetchUsers, deleteUser, updateUser } from "@/actions/user"
 
 type Props = {
   users: User[]
@@ -12,6 +13,7 @@ type Props = {
 
 export default function UserAdminPanel({ users: initialUsers }: Props) {
   const {
+    refresh,
     users,
     form, setForm,
     open, setOpen,
@@ -23,11 +25,17 @@ export default function UserAdminPanel({ users: initialUsers }: Props) {
     handleDelete,
     handleSave,
     handleAdd,
-  } = useUserAdmin(initialUsers)
+  } = useUserAdmin(initialUsers, {
+    createUser,
+    updateUser,
+    deleteUser,
+    fetchUsers
+  })
 
   return (
     <div className="space-y-2 text-sm">
       <UserToolbar
+        refresh={refresh}
         search={search}
         setSearch={setSearch}
         roleFilter={roleFilter}

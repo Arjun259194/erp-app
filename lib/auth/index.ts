@@ -5,6 +5,7 @@ import { cookies } from "next/headers"
 import { JWToken } from "./jwt"
 import { prisma } from "../database"
 import { redirect } from "next/navigation"
+import { loginRedirect } from "../redirects"
 
 
 type AuthMessage = `AuthError: ${string}`
@@ -43,7 +44,7 @@ export async function auth(): Promise<[null, AuthMessage] | [User, null]> {
   if (!user) return [null, "AuthError: No User Found"]
 
   if (user.status === "Suspended") {
-    redirect("/api/auth/force-logout?message=" + encodeURIComponent("You are suspended by the admin"))
+    loginRedirect("You are suspended by the admin")
   }
 
   return [user, null]

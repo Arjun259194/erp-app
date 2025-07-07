@@ -1,3 +1,4 @@
+import { updateSettings } from "@/actions/settings"
 import SystemSettings from "@/components/SystemSettings"
 import { auth } from "@/lib/auth"
 import { Settings } from "@/lib/settings"
@@ -12,7 +13,13 @@ export default async function page() {
   if (!settings) redirect("/settings?message=" + encodeURIComponent("Settings not loaded, try again"))
   const data = settings.getState()
 
+  const { id: _, ...safeData } = data
+
+  console.log("safeData:", safeData)
+
   return <div>
-    <SystemSettings settings={data} />
+    <SystemSettings actions={{
+      update: updateSettings
+    }} settings={safeData} />
   </div>
 }

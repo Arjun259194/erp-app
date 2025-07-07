@@ -41,7 +41,6 @@ export type SideBarItem =
     children?: never;
   };
 
-// ✅ Your sidebar data (unchanged)
 const sidebarItems: SideBarItem[] = [
   { name: "Home", Icon: Home, link: "/home" },
   {

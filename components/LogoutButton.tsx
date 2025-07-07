@@ -19,6 +19,7 @@ export default function LogoutButton({ children, action, ...props }: Props) {
           return "Logged out"
         }
       })
+
     }} {...props}>
       {children}
     </Button>

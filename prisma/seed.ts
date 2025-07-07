@@ -1,78 +1,82 @@
+import { faker } from "@faker-js/faker";
 import BcryptPasswordHasher from "@/lib/hash";
 import { PrismaClient } from "../generated/prisma";
-import env from "../lib/env"
+import env from "../lib/env";
 
-env()
-const prisma = new PrismaClient()
-
-type DummyUserData = Parameters<PrismaClient['user']['create']>[0]['data']
-
-const dummyUsers: Omit<DummyUserData, "password">[] = [
-  {
-    email: "dummy1@gmail.com",
-    name: "Dymmy 1",
-  },
-  {
-    email: "dummy2@gmail.com",
-    name: "Dymmy 2",
-  },
-  {
-    email: "dummy3@gmail.com",
-    name: "Dymmy 3",
-  },
-  {
-    email: "dummy4@gmail.com",
-    name: "Dymmy 4",
-  }
-]
+env();
+const prisma = new PrismaClient();
 
 async function main() {
-  const hasher = BcryptPasswordHasher.getInstance()
-  const pass = await hasher.hash(process.env.ADMIN_PASS)
-  const userPass = await hasher.hash("12345678")
+  const hasher = BcryptPasswordHasher.getInstance();
 
+  // Hash admin and user password
+  const adminPass = await hasher.hash(process.env.ADMIN_PASS || "adminpass");
+  const userPass = await hasher.hash("12345678");
+
+  // ✅ Create or update admin user
   await prisma.user.upsert({
-    where: {
-      email: process.env.ADMIN_EMAIL
-    },
+    where: { email: process.env.ADMIN_EMAIL! },
     update: {
-      name: "admin",
-      password: pass,
+      name: "Admin",
+      password: adminPass,
       role: "Admin",
+      status: "Active",
     },
     create: {
-      name: "admin",
-      email: process.env.ADMIN_EMAIL,
-      password: pass,
-      role: "Admin"
-    }
-  })
+      name: "Admin",
+      email: process.env.ADMIN_EMAIL!,
+      password: adminPass,
+      role: "Admin",
+      status: "Active",
+    },
+  });
+  console.log(`✅ Admin created/updated`);
 
-  console.log(`Admin created 🌱`)
+  // 🎭 Generate 20 fake users
+  const fakeUsers = Array.from({ length: 20 }).map(() => ({
+    name: faker.person.fullName(),
+    email: faker.internet.email().toLowerCase(),
+  }));
 
-  await prisma.user.createMany({
-    data: dummyUsers.map(user => {
-      return { ...user, password: userPass }
-    })
-  })
-
-
-  console.log("Dummy users created 🌱")
-
-  const setting = await prisma.globalSettings.findFirst({
-    where: {
-      id: 1
-    }
-  })
-
-  if (!setting) {
-    await prisma.globalSettings.create({})
+  for (const user of fakeUsers) {
+    await prisma.user.upsert({
+      where: { email: user.email },
+      update: {
+        name: user.name,
+        password: userPass,
+        role: "User",
+        status: "Active",
+      },
+      create: {
+        name: user.name,
+        email: user.email,
+        password: userPass,
+        role: "User",
+        status: "Active",
+      },
+    });
   }
 
-  console.log("Default settings created 🌱")
+  console.log(`✅ Fake users inserted or updated`);
 
+  // ✅ Create global settings if missing
+  const setting = await prisma.globalSettings.findFirst({
+    where: { id: 1 },
+  });
+
+  if (!setting) {
+    await prisma.globalSettings.create({});
+    console.log("✅ Default settings created");
+  } else {
+    console.log("ℹ️ Settings already exist");
+  }
 }
 
-main().catch(err => {
-  console.error("There is an error: ", err)
-})
+main()
+  .catch((err) => {
+    console.error("❌ Error seeding DB:", err);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
+

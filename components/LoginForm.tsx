@@ -71,7 +71,6 @@ export function LoginForm({ loginAction, ...props }: Props) {
           <p className="text-sm text-red-500">{errors.email.message}</p>
         )}
       </div>
-
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
         <div className="relative">
