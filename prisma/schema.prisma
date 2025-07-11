@@ -105,6 +105,24 @@ model GlobalSettings {
   public_registration Boolean @default(false)
 }
 
+enum RegisterRequestState {
+  Pending
+  Approved
+  Rejected
+}
+
+model PublicRegistrationRequest {
+  id       String               @id @unique @default(cuid())
+  name     String
+  password String
+  email    String               @unique
+  reason   String
+  state    RegisterRequestState @default(Pending)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // --- Authentication & Users ---
 
 model User {

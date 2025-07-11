@@ -11,7 +11,9 @@ const envSchema = z.object({
   PASSWORD_SALT_ROUNDS: z.string().min(1).nonempty(),
   NEXT_PUBLIC_APP_URL: z.string().url(),
   ADMIN_EMAIL: z.string().email(),
-  ADMIN_PASS: z.string().min(8)
+  ADMIN_PASS: z.string().min(8),
+  NEXT_PUBLIC_RECAPTCHA_SITE_KEY: z.string(),
+  RECAPTCHA_SECRET_KEY: z.string()
 })
 
 declare global {

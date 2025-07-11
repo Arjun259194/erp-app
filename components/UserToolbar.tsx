@@ -52,7 +52,7 @@ export default function UserToolbar({
         </Select>
 
         <Button size="sm" className="aspect-square flex items-center justify-center" onClick={refresh}>
-          <RotateCcw className="h-4 w-4 mr-1" />
+          <RotateCcw className="h-4 w-4 mr-1" /> 
         </Button>
 
         <Button size="sm" className="h-8 px-3" onClick={onAddClick}>

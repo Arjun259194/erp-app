@@ -1,23 +1,24 @@
-"use server"
+"use server";
 
 import { DB } from "@/lib/database";
-import z from "zod"
+import z from "zod";
 
 const schema = z.object({
-  public_registration: z.string().transform(val => val === "true").optional()
-})
+  public_registration: z
+    .string()
+    .transform((val) => val === "true")
+    .optional(),
+});
 
-export async function updateSettings(formdata: FormData) {
-  const data = Object.fromEntries(formdata.entries()) as Record<string, unknown>;
-
-  const result = await schema.safeParseAsync(data)
+export async function updateSettings(obj: Record<string, unknown>) {
+  const result = await schema.safeParseAsync(obj);
 
   if (!result.success) {
-    console.log(result.error.message)
-    throw new Error(result.error.issues[0].message)
+    console.log(result.error.message);
+    throw new Error(result.error.issues[0].message);
   }
 
-  const updateData = result.data
+  const updateData = result.data;
 
-  return await DB.UpdateSettings(updateData)
+  return await DB.UpdateSettings(updateData);
 }

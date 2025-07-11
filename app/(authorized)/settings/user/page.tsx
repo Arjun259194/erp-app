@@ -1,19 +1,37 @@
-import UserAdminPanel from "@/components/UserAdminPanel"
-import { auth } from "@/lib/auth"
-import { DB } from "@/lib/database"
-import { redirect } from "next/navigation"
+import TabsAdminPanel from "@/components/UserPanelTabs";
+import { auth } from "@/lib/auth";
+import { DB } from "@/lib/database";
+import { redirect } from "next/navigation";
+import {
+  acceptRegistractionRequest,
+  rejectRegistractionRequest,
+} from "./action";
 
 export default async function page() {
-  const [user, error] = await auth()
+  const [user, error] = await auth();
   if (error) redirect("/auth/login?message=" + encodeURIComponent(error));
-  if (user.role !== "Admin") redirect("/home?message=" + encodeURIComponent("Not authorized"));
+  if (user.role !== "Admin")
+    redirect("/home?message=" + encodeURIComponent("Not authorized"));
 
-  const users = await DB.FetchAllUsers();
+  const [users, settings, requests] = await Promise.all([
+    DB.FetchAllUsers(),
+    DB.GetSettings(),
+    DB.GetAllRegisterRequests(),
+  ]);
 
   return (
-    <>
-      <UserAdminPanel users={users} />
-    </>
-  )
+    <TabsAdminPanel
+      {...{
+        users,
+        settings,
+        requests,
+      }}
+      acceptRequestAction={acceptRegistractionRequest}
+      rejectRequestAction={rejectRegistractionRequest}
+      fetchRequests={async () => {
+        "use server";
+        return await DB.GetAllRegisterRequests();
+      }}
+    />
+  );
 }
-

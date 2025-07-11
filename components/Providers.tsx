@@ -6,14 +6,17 @@ export default function Providers({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  return <ThemeProvider
-    attribute="class"
-    defaultTheme="system"
-    enableSystem
-    disableTransitionOnChange
-  >
-    {children}
-    <Toaster position='bottom-right' />
-  </ThemeProvider>
+  return (
+    <>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        {children}
+        <Toaster position="bottom-center" />
+      </ThemeProvider>
+    </>
+  );
 }

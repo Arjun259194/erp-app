@@ -59,6 +59,37 @@ async function main() {
 
   console.log(`✅ Fake users inserted or updated`);
 
+  const fakeRegistractionRequests = Array.from({ length: 10 }).map(() => ({
+    email: faker.internet.email().toLowerCase(),
+    password: faker.internet.password({
+      length: 12,
+    }),
+    name: faker.person.fullName(),
+    reason: faker.lorem.sentence(),
+  }));
+
+  // ✅ Create fake registration requests
+  for (const request of fakeRegistractionRequests) {
+    await prisma.publicRegistrationRequest.upsert({
+      where: { email: request.email },
+      update: {
+        name: request.name,
+        password: request.password,
+        reason: request.reason,
+        state: "Pending",
+      },
+      create: {
+        name: request.name,
+        email: request.email,
+        password: request.password,
+        reason: request.reason,
+        state: "Pending",
+      },
+    });
+  } 
+
+  console.log(`✅ Fake registraction requests inserted or updated`);
+
   // ✅ Create global settings if missing
   const setting = await prisma.globalSettings.findFirst({
     where: { id: 1 },
