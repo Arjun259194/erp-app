@@ -4,6 +4,7 @@ import { forgotPassword } from "./forgotPasswordRequest";
 import { emailLogin } from "./emailLogin";
 import { settings } from "./settings";
 import { registerRequest } from "./RegisterRequest";
+import { items } from "./items";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -23,4 +24,5 @@ export const DB = {
   ...emailLogin,
   ...settings,
   ...registerRequest,
+  ...items,
 };

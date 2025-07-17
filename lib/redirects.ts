@@ -1,5 +1,5 @@
 // lib/show-message.ts
-import { redirect } from 'next/navigation';
+import { redirect } from "next/navigation";
 
 export function gotError(title: string, message: string) {
   const urlTitle = encodeURIComponent(title);
@@ -8,7 +8,6 @@ export function gotError(title: string, message: string) {
 }
 
 export function loginRedirect(message: string) {
-  const msg = encodeURIComponent(message)
-  return redirect("/auth/login?message=" + msg)
+  const msg = encodeURIComponent(message);
+  return redirect("/auth/login?message=" + msg);
 }
-

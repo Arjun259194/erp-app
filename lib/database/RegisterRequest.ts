@@ -17,7 +17,7 @@ export const registerRequest = {
     return await prisma.publicRegistrationRequest.findFirst({
       where: { id },
     });
-  }, 
+  },
 
   async GetAllRegisterRequests() {
     return await prisma.publicRegistrationRequest.findMany({

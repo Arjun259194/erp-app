@@ -4,27 +4,31 @@ export const session = {
   async GetSession(userId: string) {
     return await prisma.session.findFirst({
       where: {
-        userId
-      }
-    })
+        userId,
+      },
+    });
   },
 
   async RevokeSession(userId: string) {
     return await prisma.session.update({
       data: { revoked: true },
-      where: { userId: userId }
-    })
+      where: { userId: userId },
+    });
   },
 
   async ClearPastSessions(userId: string) {
     return await prisma.session.deleteMany({
       where: {
-        userId
-      }
-    })
+        userId,
+      },
+    });
   },
 
-  async RenewOrCreateSession(userId: string, newToken: string, expiresInMs = 1000 * 60 * 60 * 24 * 7) {
+  async RenewOrCreateSession(
+    userId: string,
+    newToken: string,
+    expiresInMs = 1000 * 60 * 60 * 24 * 7,
+  ) {
     const now = new Date();
     const expiresAt = new Date(Date.now() + expiresInMs);
 
@@ -54,4 +58,4 @@ export const session = {
       },
     });
   },
-}
+};

@@ -4,10 +4,7 @@ import { DB } from "@/lib/database";
 import z from "zod";
 
 const schema = z.object({
-  public_registration: z
-    .string()
-    .transform((val) => val === "true")
-    .optional(),
+  public_registration: z.boolean().optional(),
 });
 
 export async function updateSettings(obj: Record<string, unknown>) {

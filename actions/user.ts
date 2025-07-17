@@ -33,7 +33,7 @@ const UpdateSchema = z.object({
   status: z
     .enum(["Active", "Inactive", "Suspended", "Pending"] satisfies [
       UserStatus,
-      ...UserStatus[]
+      ...UserStatus[],
     ])
     .optional(),
 });
@@ -46,12 +46,11 @@ export async function createUser(formdata: FormData) {
     role: formdata.get("role"),
   };
 
-
   const result = CreateSchema.safeParse(rawData);
   if (!result.success) {
-    console.log("failed to parse")
+    console.log("failed to parse");
     console.log("rawData:", Object.fromEntries(formdata.entries()));
-    throw new Error("not valid data")
+    throw new Error("not valid data");
   }
 
   const { ...cred } = result.data;
@@ -81,16 +80,16 @@ export async function updateUser(formdata: FormData) {
   } as Record<string, string | null | undefined>;
 
   if (rawData.password === null || rawData.password === "") {
-    rawData.password = undefined
+    rawData.password = undefined;
   }
 
-    console.log("rawData:", Object.fromEntries(formdata.entries()));
+  console.log("rawData:", Object.fromEntries(formdata.entries()));
 
   const result = UpdateSchema.safeParse(rawData);
   if (!result.success) {
-    console.log("failed to parse: ", result.error.message)
+    console.log("failed to parse: ", result.error.message);
     console.log("rawData:", Object.fromEntries(formdata.entries()));
-    throw new Error(result.error.issues[0].message)
+    throw new Error(result.error.issues[0].message);
   }
 
   const { id, password, ...cred } = result.data;
@@ -100,7 +99,7 @@ export async function updateUser(formdata: FormData) {
     : undefined;
 
   try {
-    console.log("cred:", cred)
+    console.log("cred:", cred);
     await DB.UpdateUserById(id, {
       ...cred,
       password: safePassword,
@@ -126,5 +125,5 @@ export async function deleteUser(formadat: FormData) {
 }
 
 export async function fetchUsers() {
-  return await DB.FetchAllUsers()
+  return await DB.FetchAllUsers();
 }

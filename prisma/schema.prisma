@@ -201,11 +201,12 @@ model Session {
 // --- Company and Multi-tenancy ---
 
 model Company {
-  id                String              @id @default(cuid())
-  name              String              @unique
-  domain            String?             @unique
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
+  id        String   @id @default(cuid())
+  name      String   @unique
+  domain    String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   users             UserCompanyRole[]
   warehouses        Warehouse[]
   suppliers         Supplier[]
@@ -215,7 +216,6 @@ model Company {
   employees         Employee[]
   taxTemplates      TaxTemplate[]
   chartOfAccounts   ChartOfAccounts[]
-  Item              Item[]
   PurchaseRequest   PurchaseRequest[]
   PurchaseQuotation PurchaseQuotation[]
   PurchaseOrder     PurchaseOrder[]
@@ -251,18 +251,28 @@ model UserCompanyRole {
   @@unique([userId, companyId, role])
 }
 
-// --- Inventory Management ---
-
 model Item {
-  id                     String                   @id @default(cuid())
-  sku                    String                   @unique
-  name                   String
-  description            String?
-  unit                   String // e.g., pcs, kg, liter
-  price                  Float
-  status                 String
-  company                Company                  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  companyId              String
+  id          String  @id @default(cuid())
+  sku         String  @unique
+  name        String
+  description String?
+  unit        String // e.g., pcs, kg, liter
+  price       Float
+  status      String
+
+  // New Fields Based on UI
+  isDisabled           Boolean @default(false) // Corresponds to "Disabled" checkbox
+  allowAlternativeItem Boolean @default(false) // Checkbox for Allow Alternative Item
+  maintainStock        Boolean @default(false) // Checkbox for Maintain Stock
+  hasVariants          Boolean @default(false) // Checkbox for Has Variants
+  isFixedAsset         Boolean @default(false) // Checkbox for Is Fixed Asset
+  isZeroRated          Boolean @default(false) // Checkbox for Is Zero Rated
+  isExempt             Boolean @default(false) // Checkbox for Is Exempt
+
+  overDeliveryAllowance Float   @default(0.0) // Over Delivery/Receipt Allowance (%)
+  overBillingAllowance  Float   @default(0.0) // Over Billing Allowance (%)
+  taxCode               String? // Free text input for Tax Code
+
   warehouses             ItemStock[]
   stockEntries           StockEntry[]
   bom                    BillOfMaterials[]
@@ -278,6 +288,15 @@ model Item {
   BOMItem                BOMItem[]
   RawMaterialConsumption RawMaterialConsumption[]
   FinishedGoodsOutput    FinishedGoodsOutput[]
+  ItemGroup              ItemGroup?               @relation(fields: [itemGroupId], references: [id])
+  itemGroupId            String?
+}
+
+model ItemGroup {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String?
+  items       Item[]
 }
 
 model Warehouse {

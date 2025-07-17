@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description: "ERP APP - An ERP solution for all users",
 };
 
-env()
+env();
 
 export default function RootLayout({
   children,
@@ -34,9 +34,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

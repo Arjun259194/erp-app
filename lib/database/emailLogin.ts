@@ -1,4 +1,4 @@
-import { prisma } from "."
+import { prisma } from ".";
 
 export const emailLogin = {
   async FindLatestEmailLoginRequest(userId: string) {
@@ -6,28 +6,25 @@ export const emailLogin = {
       where: {
         userId,
         createdAt: {
-          gte: new Date(Date.now() - 10 * 60 * 1000)
-        }
+          gte: new Date(Date.now() - 10 * 60 * 1000),
+        },
       },
-    })
+    });
   },
 
   async CreateNewEmailLoginRequest(userId: string) {
     await prisma.emailLoginRequest.create({
       data: {
         userId,
-      }
-    })
+      },
+    });
   },
 
   async ClearAllPastEmailLoginRequest(reqId: string, userId: string) {
     await prisma.emailLoginRequest.deleteMany({
       where: {
-        OR: [
-          { userId },
-          { id: reqId }
-        ]
+        OR: [{ userId }, { id: reqId }],
       },
-    })
-  }
-}
+    });
+  },
+};

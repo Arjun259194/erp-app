@@ -29,17 +29,17 @@ import { User } from "@/generated/prisma";
 // ✅ Your recursive item type
 export type SideBarItem =
   | {
-    name: string;
-    Icon: any;
-    children: SideBarItem[];
-    link?: never;
-  }
+      name: string;
+      Icon: any;
+      children: SideBarItem[];
+      link?: never;
+    }
   | {
-    name: string;
-    Icon: any;
-    link: string;
-    children?: never;
-  };
+      name: string;
+      Icon: any;
+      link: string;
+      children?: never;
+    };
 
 const sidebarItems: SideBarItem[] = [
   { name: "Home", Icon: Home, link: "/home" },
@@ -63,7 +63,11 @@ const sidebarItems: SideBarItem[] = [
       { name: "Recuitment", Icon: Users, link: "/recuitment" },
       { name: "Employee Lifecycle", Icon: Users, link: "/employee-lifecycle" },
       { name: "Performance", Icon: ShieldCheck, link: "/performance" },
-      { name: "Shift & Attendance", Icon: BadgeDollarSign, link: "/shiftandattendance" },
+      {
+        name: "Shift & Attendance",
+        Icon: BadgeDollarSign,
+        link: "/shiftandattendance",
+      },
       { name: "Expence Claims", Icon: Wallet, link: "/expence-claims" },
       { name: "Leaves", Icon: Package, link: "/leaves" },
     ],
@@ -81,13 +85,13 @@ const sidebarItems: SideBarItem[] = [
   { name: "Quality", Icon: ShieldCheck, link: "/quality" },
   { name: "Projects", Icon: KanbanSquare, link: "/projects" },
   { name: "Support", Icon: LifeBuoy, link: "/support" },
-  { name: "ERP Settings", Icon: Settings, link: "/settings" }
+  { name: "ERP Settings", Icon: Settings, link: "/settings" },
 ];
 
 // ✅ Props
 interface Props {
   children: ReactNode;
-  user: User
+  user: User;
 }
 
 // ✅ Main Layout Component
@@ -109,20 +113,27 @@ export default function SideBarLayout({ children, user }: Props) {
       {/* Sidebar + Main */}
       <div className="flex flex-1 min-h-0">
         <Sidebar user={user} items={sidebarItems} isOpen={isOpen} />
-        <main className="flex-1 overflow-y-auto p-4">
-          {children}
-        </main>
+        <main className="flex-1 overflow-y-auto p-4">{children}</main>
       </div>
     </div>
   );
 }
 
 // ✅ Sidebar Component
-function Sidebar({ isOpen, items, user }: { isOpen: boolean; user: User; items: SideBarItem[] }) {
+function Sidebar({
+  isOpen,
+  items,
+  user,
+}: {
+  isOpen: boolean;
+  user: User;
+  items: SideBarItem[];
+}) {
   return (
     <aside
-      className={`${isOpen ? "w-64" : "hidden"
-        } border-r overflow-y-auto px-2 py-4 bg-background`}
+      className={`${
+        isOpen ? "w-64" : "hidden"
+      } border-r overflow-y-auto px-2 py-4 bg-background`}
     >
       <Items items={items} />
     </aside>
@@ -161,7 +172,9 @@ function Item({ item }: { item: SideBarItem }) {
           </Button>
           <div className="ml-5">
             {open &&
-              item.children.map((child) => <Item key={child.name} item={child} />)}
+              item.children.map((child) => (
+                <Item key={child.name} item={child} />
+              ))}
           </div>
         </>
       ) : (
@@ -175,4 +188,3 @@ function Item({ item }: { item: SideBarItem }) {
     </div>
   );
 }
-

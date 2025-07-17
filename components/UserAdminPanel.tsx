@@ -1,26 +1,31 @@
-"use client"
+"use client";
 
-import { User } from "@/generated/prisma"
-import UserTable from "./UserTable"
-import UserDialog from "./UserDialog"
-import UserToolbar from "./UserToolbar"
-import { useUserAdmin } from "@/hook/useUserAdmin"
-import { createUser, fetchUsers, deleteUser, updateUser } from "@/actions/user"
+import { User } from "@/generated/prisma";
+import UserTable from "./UserTable";
+import UserDialog from "./UserDialog";
+import UserToolbar from "./UserToolbar";
+import { useUserAdmin } from "@/hook/useUserAdmin";
+import { createUser, fetchUsers, deleteUser, updateUser } from "@/actions/user";
 
 type Props = {
-  users: User[]
-}
+  users: User[];
+};
 
 export default function UserAdminPanel({ users: initialUsers }: Props) {
   const {
     refresh,
     users,
-    form, setForm,
-    open, setOpen,
+    form,
+    setForm,
+    open,
+    setOpen,
     editing,
-    search, setSearch,
-    roleFilter, setRoleFilter,
-    statusFilter, setStatusFilter,
+    search,
+    setSearch,
+    roleFilter,
+    setRoleFilter,
+    statusFilter,
+    setStatusFilter,
     handleEdit,
     handleDelete,
     handleSave,
@@ -29,8 +34,8 @@ export default function UserAdminPanel({ users: initialUsers }: Props) {
     createUser,
     updateUser,
     deleteUser,
-    fetchUsers
-  })
+    fetchUsers,
+  });
 
   return (
     <div className="space-y-2 text-sm">
@@ -54,6 +59,5 @@ export default function UserAdminPanel({ users: initialUsers }: Props) {
         onSave={handleSave}
       />
     </div>
-  )
+  );
 }
-

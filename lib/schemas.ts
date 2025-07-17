@@ -7,5 +7,5 @@ export const loginSchema = z.object({
   password: z
     .string({ message: "Password is not valid" })
     .min(6, { message: "Password must be atleast 6 characters" })
-    .max(16, { message: "password must be under 16 characters" })
-})
+    .max(16, { message: "password must be under 16 characters" }),
+});

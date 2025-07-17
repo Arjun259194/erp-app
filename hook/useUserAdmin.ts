@@ -17,7 +17,7 @@ type PropsActions = {
   createUser: ServerAction;
   updateUser: ServerAction;
   deleteUser: ServerAction;
-  fetchUsers: ServerAction<User[], undefined>
+  fetchUsers: ServerAction<User[], undefined>;
 };
 
 export function useUserAdmin(initialUsers: User[], actions: PropsActions) {
@@ -80,7 +80,7 @@ export function useUserAdmin(initialUsers: User[], actions: PropsActions) {
     toast.promise(actions.deleteUser(formdata), {
       loading: "Deleting...",
       success: () => {
-        return  "User deleted successfully!"
+        return "User deleted successfully!";
       },
       error: (err) => {
         console.error(err);
@@ -88,7 +88,7 @@ export function useUserAdmin(initialUsers: User[], actions: PropsActions) {
       },
     });
 
-    await refresh()
+    await refresh();
   };
 
   const handleSave = async () => {
@@ -130,7 +130,7 @@ export function useUserAdmin(initialUsers: User[], actions: PropsActions) {
       },
     });
 
-    await refresh()
+    await refresh();
   };
 
   const handleAdd = () => {
@@ -162,6 +162,6 @@ export function useUserAdmin(initialUsers: User[], actions: PropsActions) {
     handleDelete,
     handleSave,
     handleAdd,
-    refresh 
+    refresh,
   };
 }

@@ -1,4 +1,4 @@
-import {prisma} from "."
+import { prisma } from ".";
 
 export const forgotPassword = {
   async FindLatestForgotPasswordRequest(userId: string) {
@@ -6,28 +6,25 @@ export const forgotPassword = {
       where: {
         userId,
         createdAt: {
-          gte: new Date(Date.now() - 10 * 60 * 1000)
-        }
+          gte: new Date(Date.now() - 10 * 60 * 1000),
+        },
       },
-    })
+    });
   },
 
   async CreateNewForgotPasswordRequest(userId: string) {
     await prisma.forgotPasswordRequest.create({
       data: {
         userId,
-      }
-    })
+      },
+    });
   },
 
   async ClearAllPastForgotPasswordRequest(reqId: string, userId: string) {
     await prisma.forgotPasswordRequest.deleteMany({
       where: {
-        OR: [
-          { userId },
-          { id: reqId }
-        ]
+        OR: [{ userId }, { id: reqId }],
       },
-    })
+    });
   },
-}
+};

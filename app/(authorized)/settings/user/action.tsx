@@ -39,14 +39,14 @@ export async function acceptRegistractionRequest({
 
   const loginRedirectURL = new URL(
     "/auth/login",
-    process.env.NEXT_PUBLIC_APP_URL
+    process.env.NEXT_PUBLIC_APP_URL,
   );
 
   loginRedirectURL.searchParams.set(
     "message",
     encodeURIComponent(
-      "Your registration request has been accepted \n You can now login with your credentials."
-    )
+      "Your registration request has been accepted \n You can now login with your credentials.",
+    ),
   );
 
   const mailbody: string = await render(
@@ -54,7 +54,7 @@ export async function acceptRegistractionRequest({
       loginUrl={loginRedirectURL.toString()}
       username={newUser.name}
       customMessage={customMessage}
-    />
+    />,
   );
 
   const mailConfig = await MailBuilder.create()
@@ -89,7 +89,7 @@ export async function rejectRegistractionRequest({
     <RejectedRegisterRequest
       username={request.name}
       customMessage={customMessage}
-    />
+    />,
   );
 
   const mailConfig = await MailBuilder.create()
