@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Company, Item, ItemGroup } from "@/generated/prisma";
+import { Item, ItemGroup } from "@/generated/prisma";
 import { ServerAction } from "@/types";
 
 export type ItemData = Item & {

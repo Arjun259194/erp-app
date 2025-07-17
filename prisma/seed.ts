@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import BcryptPasswordHasher from "@/lib/hash";
-import { PrismaClient } from "../generated/prisma";
+import { PrismaClient, ItemState } from "../generated/prisma";
 import env from "../lib/env";
 
 env();
@@ -159,7 +159,7 @@ async function main() {
 
   // Create 5 items for the test company
   const itemUnits = ["pcs", "kg", "liter"];
-  const itemStatuses = ["Enabled", "Template", "Archived"];
+  const itemStatuses = ["Active", "InActive", "PreOrder", "OutOfStock"] satisfies ItemState[];
 
   // pick random itemGroup for each item
   for (let i = 0; i < 5; i++) {

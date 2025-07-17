@@ -251,6 +251,13 @@ model UserCompanyRole {
   @@unique([userId, companyId, role])
 }
 
+enum ItemState {
+  Active
+  InActive 
+  OutOfStock
+  PreOrder
+}
+
 model Item {
   id          String  @id @default(cuid())
   sku         String  @unique
@@ -258,7 +265,7 @@ model Item {
   description String?
   unit        String // e.g., pcs, kg, liter
   price       Float
-  status      String
+  status      ItemState @default(Active)
 
   // New Fields Based on UI
   isDisabled           Boolean @default(false) // Corresponds to "Disabled" checkbox

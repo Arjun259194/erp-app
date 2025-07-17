@@ -15,11 +15,13 @@ import { ItemData } from "@/hook/useItemTable";
 
 export function ItemTableRow({ item }: { item: ItemData }) {
   const statusColor =
-    item.status === "Enabled"
+    item.status === "Active"
       ? "bg-blue-100 text-blue-700"
-      : item.status === "Template"
-        ? "bg-orange-100 text-orange-700"
-        : "bg-muted";
+      : item.status === "InActive"
+        ? "bg-orange-100 text-orange-700" 
+        : item.status === "PreOrder" 
+          ? "bg-green-100 text-green-700" 
+          : "bg-muted text-muted-foreground";
 
   return (
     <TableRow className="hover:bg-muted/50 cursor-pointer transition-colors">
@@ -28,7 +30,6 @@ export function ItemTableRow({ item }: { item: ItemData }) {
       </TableCell>
       <TableCell className="font-medium">{item.name}</TableCell>
       <TableCell>
-        {" "}
         <Badge className={cn("text-xs", statusColor)}>{item.status}</Badge>{" "}
       </TableCell>
       <TableCell>{item.ItemGroup?.name || "None"}</TableCell>

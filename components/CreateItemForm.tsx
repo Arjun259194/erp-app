@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { ServerAction } from "@/types";
 import toast from "react-hot-toast";
+import { PlusCircle } from "lucide-react";
 
 type CreateItemFormProps = {
   createItemAction: ServerAction<void, Record<string, unknown>>;
@@ -144,24 +145,38 @@ export function CreateItemForm({
       </div>
 
       <div className="space-y-2">
-        <Label>Item Group</Label>
-        <Select
-          value={formState.itemGroupId}
-          onValueChange={(val) => handleSelectChange("itemGroupId", val)}
+  <Label>Item Group</Label>
+  <Select
+    value={formState.itemGroupId}
+    onValueChange={(val) => handleSelectChange("itemGroupId", val)}
+  >
+    <SelectTrigger>
+      <SelectValue placeholder="Select group (optional)" />
+    </SelectTrigger>
+    <SelectContent>
+      {itemGroups.map((group, k) => (
+        <SelectItem key={k} value={group.id}>
+          {group.name}
+        </SelectItem>
+      ))}
+      <div className="p-1 border-t">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="w-full justify-start"
+          onClick={(e) => {
+            e.preventDefault();
+            // Your create new group logic here
+            console.log("Create new group clicked");
+          }}
         >
-          <SelectTrigger>
-            <SelectValue placeholder="Select group (optional)" />
-          </SelectTrigger>
-          <SelectContent>
-            {itemGroups.map((group, k) => (
-              <SelectItem key={k} value={group.id}>
-                {group.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <PlusCircle className="mr-2 h-4 w-4" />
+          Create New Item Group
+        </Button>
       </div>
-
+    </SelectContent>
+  </Select>
+</div>
       <Button type="submit" className="w-full">
         Create Item
       </Button>
