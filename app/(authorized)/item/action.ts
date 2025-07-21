@@ -1,5 +1,6 @@
 "use server";
 
+import { ItemState } from "@/generated/prisma";
 import { ItemData } from "@/hook/useItemTable";
 import { DB } from "@/lib/database";
 import { ServerAction } from "@/types";
@@ -11,7 +12,12 @@ const schema = z.object({
   description: z.string().optional(),
   unit: z.string().min(1, "Unit is required"),
   price: z.number().min(0, "Price must be a positive number"),
-  status: z.enum(["active", "inactive", "template"]).default("active"),
+  status: z
+    .enum(["Active", "InActive", "OutOfStock", "PreOrder"] satisfies [
+      ItemState,
+      ...ItemState[],
+    ])
+    .default("Active"),
   itemGroupId: z.string().optional(),
 });
 
@@ -23,7 +29,7 @@ export default async function createItem(record: Record<string, unknown>) {
   }
 
   const data = parsed.data;
-  console.log(data)
+  console.log(data);
 
   try {
     await DB.NewItem(data);

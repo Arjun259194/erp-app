@@ -10,6 +10,17 @@ export const items = {
     });
   },
 
+  async UpdateItemById<
+    T extends Parameters<PrismaClient["item"]["update"]>[0]["data"],
+  >(id: string, data: T) {
+    return await prisma.item.update({
+      where: {
+        id,
+      },
+      data,
+    });
+  },
+
   async GetAllItemGroups() {
     return await prisma.itemGroup.findMany();
   },
@@ -35,6 +46,14 @@ export const items = {
       },
       include: {
         ItemGroup: true,
+      },
+    });
+  },
+
+  async GetItemGroupById(id: string) {
+    return await prisma.itemGroup.findFirst({
+      where: {
+        id,
       },
     });
   },

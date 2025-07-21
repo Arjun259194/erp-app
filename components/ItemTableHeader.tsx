@@ -30,7 +30,7 @@ export function ItemTableHeader({
   onFilterChange: (val: string | null) => void;
   onGroupChange: (val: string | null) => void;
   group: string | null;
-  groups: {id: string, name: string}[];
+  groups: { id: string; name: string }[];
   reload: () => void;
 }) {
   return (

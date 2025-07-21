@@ -10,8 +10,8 @@ export default async function page() {
 
   return (
     <ItemTable
-      fetchItemsAction={ getallitems }
-      groups={groups.map(({name, id}) => ({name, id}))}
+      fetchItemsAction={getallitems}
+      groups={groups.map(({ name, id }) => ({ name, id }))}
       items={items}
     />
   );

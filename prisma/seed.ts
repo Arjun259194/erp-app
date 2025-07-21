@@ -148,18 +148,23 @@ async function main() {
         name: group.name,
         description: group.description,
       },
-    })
+    }),
   );
 
   const itemGroupResults = await Promise.all(itemGroupPromises);
   console.log(
     "✅ Item groups created:",
-    itemGroupResults.map((g) => g.name)
+    itemGroupResults.map((g) => g.name),
   );
 
   // Create 5 items for the test company
   const itemUnits = ["pcs", "kg", "liter"];
-  const itemStatuses = ["Active", "InActive", "PreOrder", "OutOfStock"] satisfies ItemState[];
+  const itemStatuses = [
+    "Active",
+    "InActive",
+    "PreOrder",
+    "OutOfStock",
+  ] satisfies ItemState[];
 
   // pick random itemGroup for each item
   for (let i = 0; i < 5; i++) {

@@ -21,7 +21,7 @@ export function ItemTable({
   fetchItemsAction: fetchItems,
 }: {
   items: ItemData[];
-  groups: {id: string, name: string}[];
+  groups: { id: string; name: string }[];
   fetchItemsAction: ServerAction<ItemData[], void>;
 }) {
   const {

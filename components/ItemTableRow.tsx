@@ -12,15 +12,16 @@ import { cn } from "@/lib/utils";
 import { TableCell, TableRow } from "./ui/table";
 import { Input } from "./ui/input";
 import { ItemData } from "@/hook/useItemTable";
+import Link from "next/link";
 
 export function ItemTableRow({ item }: { item: ItemData }) {
   const statusColor =
     item.status === "Active"
       ? "bg-blue-100 text-blue-700"
       : item.status === "InActive"
-        ? "bg-orange-100 text-orange-700" 
-        : item.status === "PreOrder" 
-          ? "bg-green-100 text-green-700" 
+        ? "bg-orange-100 text-orange-700"
+        : item.status === "PreOrder"
+          ? "bg-green-100 text-green-700"
           : "bg-muted text-muted-foreground";
 
   return (
@@ -28,7 +29,9 @@ export function ItemTableRow({ item }: { item: ItemData }) {
       <TableCell className="px-4 py-2">
         <Input type="checkbox" />
       </TableCell>
-      <TableCell className="font-medium">{item.name}</TableCell>
+      <TableCell className="font-medium">
+        <Link href={`/item/${item.id}`}>{item.name}</Link>
+      </TableCell>
       <TableCell>
         <Badge className={cn("text-xs", statusColor)}>{item.status}</Badge>{" "}
       </TableCell>

@@ -15,12 +15,19 @@ import {
 import { ServerAction } from "@/types";
 import toast from "react-hot-toast";
 import { PlusCircle } from "lucide-react";
+import { ItemState } from "@/generated/prisma";
 
 type CreateItemFormProps = {
   createItemAction: ServerAction<void, Record<string, unknown>>;
-  itemGroups: {id: string, name: string}[];
+  itemGroups: { id: string; name: string }[];
   reload: () => void;
 };
+const itemStatusOptions = [
+  "Active",
+  "InActive",
+  "OutOfStock",
+  "PreOrder",
+] satisfies ItemState[];
 
 export function CreateItemForm({
   createItemAction,
@@ -104,79 +111,88 @@ export function CreateItemForm({
         />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="unit">Unit</Label>
-        <Input
-          name="unit"
-          id="unit"
-          value={formState.unit}
-          onChange={handleChange}
-          required
-          placeholder="e.g., pcs, kg, liter"
-        />
-      </div>
+      <div className="grid grid-cols-3 gap-2">
+        <div className="space-y-2 col-span-2">
+          <Label>Status</Label>
+          <Select
+            value={formState.status}
+            onValueChange={(val) => handleSelectChange("status", val)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue
+                defaultChecked
+                defaultValue="Active"
+                placeholder="Select status"
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {itemStatusOptions.map((status, index) => (
+                <SelectItem key={index} value={status}>
+                  {status}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="price">Price</Label>
-        <Input
-          type="number"
-          name="price"
-          id="price"
-          value={formState.price}
-          onChange={handleChange}
-          required
-        />
-      </div>
+        <div className="space-y-2">
+          <Label htmlFor="unit">Unit</Label>
+          <Input
+            name="unit"
+            id="unit"
+            value={formState.unit}
+            onChange={handleChange}
+            required
+            placeholder="e.g., pcs, kg, liter"
+          />
+        </div>
 
-      <div className="space-y-2">
-        <Label>Status</Label>
-        <Select
-          value={formState.status}
-          onValueChange={(val) => handleSelectChange("status", val)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="inactive">Inactive</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="space-y-2">
+          <Label htmlFor="price">Price</Label>
+          <Input
+            type="number"
+            name="price"
+            id="price"
+            value={formState.price}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-      <div className="space-y-2">
-  <Label>Item Group</Label>
-  <Select
-    value={formState.itemGroupId}
-    onValueChange={(val) => handleSelectChange("itemGroupId", val)}
-  >
-    <SelectTrigger>
-      <SelectValue placeholder="Select group (optional)" />
-    </SelectTrigger>
-    <SelectContent>
-      {itemGroups.map((group, k) => (
-        <SelectItem key={k} value={group.id}>
-          {group.name}
-        </SelectItem>
-      ))}
-      <div className="p-1 border-t">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="w-full justify-start"
-          onClick={(e) => {
-            e.preventDefault();
-            // Your create new group logic here
-            console.log("Create new group clicked");
-          }}
-        >
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Create New Item Group
-        </Button>
+        <div className="space-y-2 col-span-2">
+          <Label>Item Group</Label>
+          <Select
+            value={formState.itemGroupId}
+            onValueChange={(val) => handleSelectChange("itemGroupId", val)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select group (optional)" />
+            </SelectTrigger>
+            <SelectContent>
+              {itemGroups.map((group, k) => (
+                <SelectItem key={k} value={group.id}>
+                  {group.name}
+                </SelectItem>
+              ))}
+              <div className="p-1 border-t">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full justify-start"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // Your create new group logic here
+                    console.log("Create new group clicked");
+                  }}
+                >
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Create New Item Group
+                </Button>
+              </div>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
-    </SelectContent>
-  </Select>
-</div>
       <Button type="submit" className="w-full">
         Create Item
       </Button>
