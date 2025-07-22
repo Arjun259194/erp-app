@@ -100,6 +100,23 @@ enum CommunicationType {
   Other
 }
 
+// NEW: Material Request Enums
+enum MaterialRequestStatus {
+  DRAFT
+  SUBMITTED
+  APPROVED
+  ORDERED
+  RECEIVED
+  CANCELLED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
 model GlobalSettings {
   id                  Int     @id @unique @default(1)
   public_registration Boolean @default(false)
@@ -158,6 +175,9 @@ model User {
   ReportTemplate        ReportTemplate[]
   ForgotPasswordRequest ForgotPasswordRequest[]
   EmailLoginRequest     EmailLoginRequest[]
+
+  // NEW: Material Request relations
+  materialRequests MaterialRequest[]
 }
 
 model ForgotPasswordRequest {
@@ -226,6 +246,9 @@ model Company {
   Contact           Contact[]
   Ticket            Ticket[]
   ReportTemplate    ReportTemplate[]
+
+  // NEW: Material Request relations
+  materialRequests MaterialRequest[]
 }
 
 // Many-to-many user <-> company with roles
@@ -288,6 +311,9 @@ model Item {
   FinishedGoodsOutput    FinishedGoodsOutput[]
   ItemGroup              ItemGroup?               @relation(fields: [itemGroupId], references: [id])
   itemGroupId            String?
+
+  // NEW: Material Request relations
+  materialRequestItems MaterialRequestItem[]
 }
 
 model ItemGroup {
@@ -309,6 +335,10 @@ model Warehouse {
   updatedAt    DateTime       @updatedAt
   GoodsReceipt GoodsReceipt[]
   DeliveryNote DeliveryNote[]
+
+  // NEW: Material Request relations
+  materialRequestItemsFrom MaterialRequestItem[] @relation("MRItemFrom")
+  materialRequestItemsTo   MaterialRequestItem[] @relation("MRItemTo")
 
   @@unique([name, companyId])
 }
@@ -332,7 +362,7 @@ model StockEntry {
   warehouseId      String
   quantity         Float
   entryType        StockEntryType
-  relatedReference String? // e.g. PurchaseOrderId, SalesOrderId, etc.
+  relatedReference String? // e.g. PurchaseOrderId, SalesOrderId, MaterialRequestId, etc.
   createdAt        DateTime       @default(now())
   createdBy        User           @relation("StockEntryCreator", fields: [createdById], references: [id])
   createdById      String
@@ -416,6 +446,10 @@ model PurchaseOrder {
   receivedAt      DateTime?
   PurchaseInvoice PurchaseInvoice[]
   GoodsReceipt    GoodsReceipt[]
+
+  // NEW: Material Request relation
+  materialRequest   MaterialRequest? @relation(fields: [materialRequestId], references: [id])
+  materialRequestId String?
 }
 
 model PurchaseOrderItem {
@@ -624,6 +658,9 @@ model Account {
   updatedAt      DateTime           @updatedAt
   Ledger         Ledger[]
   TaxRule        TaxRule[]
+
+  // NEW: Material Request relation (for cost center)
+  materialRequests MaterialRequest[] @relation("CostCenter")
 }
 
 model JournalEntry {
@@ -748,6 +785,9 @@ model Department {
   employees   Employee[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+
+  // NEW: Material Request relation
+  materialRequests MaterialRequest[]
 }
 
 model Designation {
@@ -839,6 +879,10 @@ model WorkOrder {
   ProductionPlan         ProductionPlan[]
   RawMaterialConsumption RawMaterialConsumption[]
   FinishedGoodsOutput    FinishedGoodsOutput[]
+
+  // NEW: Material Request relation
+  materialRequest   MaterialRequest? @relation(fields: [materialRequestId], references: [id])
+  materialRequestId String?
 }
 
 model ProductionPlan {
@@ -1026,4 +1070,46 @@ model ReportTemplate {
   createdById String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+// --- NEW: Material Request Models ---
+
+model MaterialRequest {
+  id             String                @id @default(cuid())
+  requestNumber  Int                   @unique
+  company        Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId      String
+  requester      User                  @relation(fields: [requesterId], references: [id])
+  requesterId    String
+  department     Department?           @relation(fields: [departmentId], references: [id])
+  departmentId   String?
+  costCenter     Account?              @relation("CostCenter", fields: [costCenterId], references: [id])
+  costCenterId   String?
+  requiredDate   DateTime
+  priority       Priority              @default(MEDIUM)
+  purpose        String?
+  status         MaterialRequestStatus @default(DRAFT)
+  items          MaterialRequestItem[]
+  purchaseOrders PurchaseOrder[]
+  workOrders     WorkOrder[]
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+}
+
+model MaterialRequestItem {
+  id                String          @id @default(cuid())
+  materialRequest   MaterialRequest @relation(fields: [materialRequestId], references: [id], onDelete: Cascade)
+  materialRequestId String
+  item              Item            @relation(fields: [itemId], references: [id])
+  itemId            String
+  description       String?
+  quantity          Float
+  uom               String
+  warehouseFrom     Warehouse?      @relation("MRItemFrom", fields: [warehouseFromId], references: [id])
+  warehouseFromId   String?
+  warehouseTo       Warehouse?      @relation("MRItemTo", fields: [warehouseToId], references: [id])
+  warehouseToId     String?
+  estimatedCost     Float?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
 }
