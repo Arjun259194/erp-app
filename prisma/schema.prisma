@@ -178,15 +178,6 @@ model EmailLoginRequest {
   updatedAt DateTime @updatedAt
 }
 
-// model UserRoleAssignments {
-//   id     String @id @default(cuid())
-//   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   userId String
-//
-//   role      UserRole
-//   createdAt DateTime @default(now())
-// }
-
 // Session or Token table for auth management
 model Session {
   id        String   @id @default(cuid())
@@ -253,14 +244,14 @@ model UserCompanyRole {
 
 enum ItemState {
   Active
-  InActive 
+  InActive
   OutOfStock
   PreOrder
 }
 
 model Item {
-  id          String  @id @default(cuid())
-  sku         String  @unique
+  id          String    @id @default(cuid())
+  sku         String    @unique
   name        String
   description String?
   unit        String // e.g., pcs, kg, liter
