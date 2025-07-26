@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 import { DB } from "@/lib/database";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 const SalesSchema = z.object({

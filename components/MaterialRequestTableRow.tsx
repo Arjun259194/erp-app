@@ -11,14 +11,12 @@ interface MaterialRequestTableRowProps {
   materialRequest: MaterialRequestData;
 }
 
-export function MaterialRequestTableRow({
-  materialRequest,
-}: MaterialRequestTableRowProps) {
+export function MaterialRequestTableRow({ materialRequest }: MaterialRequestTableRowProps) {
   return (
     <TableRow>
       <TableCell>
-        <Link href={`/material-request/${materialRequest.id}`}>
-          <a className="text-blue-600 hover:underline">View</a>
+        <Link className="text-blue-600 hover:underline" href={`/material-request/${materialRequest.id}`}>
+        View
         </Link>
       </TableCell>
       <TableCell>{materialRequest.requestNumber}</TableCell>
@@ -30,13 +28,9 @@ export function MaterialRequestTableRow({
       <TableCell>
         <Badge variant="secondary">{materialRequest.priority}</Badge>
       </TableCell>
-      <TableCell>
-        {format(new Date(materialRequest.requiredDate), "dd MMM yyyy")}
-      </TableCell>
+      <TableCell>{format(new Date(materialRequest.requiredDate), "dd MMM yyyy")}</TableCell>
       <TableCell>{materialRequest.items.length}</TableCell>
-      <TableCell>
-        {format(new Date(materialRequest.createdAt), "dd MMM yyyy")}
-      </TableCell>
+      <TableCell>{format(new Date(materialRequest.createdAt), "dd MMM yyyy")}</TableCell>
     </TableRow>
   );
 }

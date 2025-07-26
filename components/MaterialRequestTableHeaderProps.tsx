@@ -10,10 +10,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ServerAction } from "@/types";
 
 interface MaterialRequestTableHeaderProps {
   reload: () => void;
-  createMaterialRequestAction: () => Promise<void>;
+  createMaterialRequestAction: ServerAction<void, Record<string, unknown>>;
   departments: { id: string; name: string }[];
   costCenters: { id: string; name: string }[];
   search: string;
@@ -44,14 +45,20 @@ export function MaterialRequestTableHeader({
     <div className="flex flex-wrap items-center justify-between space-y-2">
       <div className="flex space-x-2">
         <Button onClick={reload}>Refresh</Button>
-        <Button onClick={createMaterialRequestAction}>New Request</Button>
+        <Button
+          onClick={() => {
+            console.log("Creating new material request");
+          }}
+        >
+          New Request
+        </Button>
       </div>
 
       <div className="flex flex-wrap gap-2">
         <Input
           placeholder="Search requests..."
           value={search}
-          onChange={(e) => onSearchChange(e.currentTarget.value)}
+          onChange={e => onSearchChange(e.currentTarget.value)}
           className="min-w-[200px]"
         />
 
@@ -83,16 +90,13 @@ export function MaterialRequestTableHeader({
           </SelectContent>
         </Select>
 
-        <Select
-          value={departmentFilter}
-          onValueChange={onDepartmentFilterChange}
-        >
+        <Select value={departmentFilter} onValueChange={onDepartmentFilterChange}>
           <SelectTrigger className="w-[160px]">
             <SelectValue placeholder="Department" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All</SelectItem>
-            {departments.map((d) => (
+            {departments.map(d => (
               <SelectItem key={d.id} value={d.id}>
                 {d.name}
               </SelectItem>

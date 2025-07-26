@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { DB } from "@/lib/database";
+import { redirect } from "next/navigation";
 
 const MetaSchema = z.object({
   id: z.string().cuid(),
@@ -15,4 +16,5 @@ export async function metaAction(fd: FormData) {
   await DB.UpdateItemById(parsed.id, {
     isDisabled: parsed.isDisabled === "on",
   });
+  redirect(`/item/${parsed.id}`);
 }

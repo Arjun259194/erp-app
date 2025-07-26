@@ -2,13 +2,7 @@
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ServerAction } from "@/types";
 import { MaterialRequestData, useMaterialRequestTable } from "@/hook/useMaterialRequestTable";
 import { MaterialRequestTableHeader } from "./MaterialRequestTableHeaderProps";
@@ -19,11 +13,13 @@ export function MaterialRequestTable({
   departments,
   costCenters,
   fetchMaterialRequestsAction: fetchMaterialRequests,
+  createMaterialRequestAction,
 }: {
   materialRequests: MaterialRequestData[];
   departments: { id: string; name: string }[];
   costCenters: { id: string; name: string }[];
   fetchMaterialRequestsAction: ServerAction<MaterialRequestData[], void>;
+  createMaterialRequestAction: ServerAction<void, Record<string, unknown>>;
 }) {
   const {
     materialRequests,
@@ -43,9 +39,7 @@ export function MaterialRequestTable({
       <div className="space-y-2">
         <MaterialRequestTableHeader
           reload={refreshMaterialRequests}
-          createMaterialRequestAction={async () => {
-            "use server"
-          }}
+          createMaterialRequestAction={createMaterialRequestAction}
           departments={departments}
           costCenters={costCenters}
           search={search}
@@ -74,10 +68,10 @@ export function MaterialRequestTable({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {materialRequests.map((materialRequest) => (
-                <MaterialRequestTableRow 
-                  key={materialRequest.id} 
-                  materialRequest={materialRequest} 
+              {materialRequests.map(materialRequest => (
+                <MaterialRequestTableRow
+                  key={materialRequest.id}
+                  materialRequest={materialRequest}
                 />
               ))}
             </TableBody>

@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { DB } from "@/lib/database";
+import { redirect } from "next/navigation";
 
 const BasicSchema = z.object({
   id: z.string().cuid(),
@@ -23,4 +24,5 @@ export async function basicAction(fd: FormData) {
     unit: parsed.unit,
     itemGroupId: parsed.itemGroupId || undefined,
   });
+  redirect(`/item/${parsed.id}`);
 }

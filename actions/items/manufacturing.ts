@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { DB } from "@/lib/database";
+import { redirect } from "next/navigation";
 
 const ManufacturingSchema = z.object({
   id: z.string().cuid(),
@@ -17,4 +18,5 @@ export async function mfgAction(fd: FormData) {
     hasVariants: parsed.hasVariants === "on",
     isFixedAsset: parsed.isFixedAsset === "on",
   });
+  redirect(`/item/${parsed.id}`);
 }

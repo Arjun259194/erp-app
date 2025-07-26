@@ -1,48 +1,57 @@
 // hook/useMaterialRequestTable.ts
+
 import { useState, useCallback, useMemo } from "react";
+
+import type { Prisma } from '@/generated/prisma'; // or '@prisma/client'
+
 import { ServerAction } from "@/types";
 
-export interface MaterialRequestData {
-  id: string;
-  requestNumber: number;
-  requester: {
-    id: string;
-    name: string;
+// Define Prisma include types for the hook
+export type MaterialRequestData = Prisma.MaterialRequestGetPayload<{
+  include: {
+    requester: {
+      select: {
+        id: true;
+        name: true;
+      };
+    };
+    department: {
+      select: {
+        id: true;
+        name: true;
+      };
+    };
+    costCenter: {
+      select: {
+        id: true;
+        name: true;
+      };
+    };
+    items: {
+      include: {
+        item: {
+          select: {
+            id: true;
+            sku: true;
+            name: true;
+          };
+        };
+      };
+    };
   };
-  department?: {
-    id: string;
-    name: string;
-  };
-  costCenter?: {
-    id: string;
-    name: string;
-  };
-  status:
-    | "DRAFT"
-    | "SUBMITTED"
-    | "APPROVED"
-    | "ORDERED"
-    | "RECEIVED"
-    | "CANCELLED";
-  priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
-  purpose?: string;
-  requiredDate: string;
-  items: MaterialRequestItemData[];
-  createdAt: string;
-  updatedAt: string;
-}
+}>;
 
-export interface MaterialRequestItemData {
-  id: string;
-  item: {
-    id: string;
-    code: string;
-    name: string;
+export type MaterialRequestItemData = Prisma.MaterialRequestItemGetPayload<{
+  include: {
+    item: {
+      select: {
+        id: true;
+        sku: true;
+        name: true;
+      };
+    };
   };
-  quantity: number;
-  uom: string;
-  estimatedCost?: number;
-}
+}>;
 
 export function useMaterialRequestTable(
   initialMaterialRequests: MaterialRequestData[],
@@ -52,13 +61,13 @@ export function useMaterialRequestTable(
     MaterialRequestData[]
   >(initialMaterialRequests);
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [priorityFilter, setPriorityFilter] = useState<string>("all");
-  const [departmentFilter, setDepartmentFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [priorityFilter, setPriorityFilter] = useState("all");
+  const [departmentFilter, setDepartmentFilter] = useState("all");
 
   const refreshMaterialRequests = useCallback(async () => {
-    const updatedMaterialRequests = await fetchMaterialRequestsAction();
-    setMaterialRequests(updatedMaterialRequests);
+    const updatedMaterialRequests = await fetchMaterialRequestsAction()
+    setMaterialRequests(updatedMaterialRequests as any);
   }, [fetchMaterialRequestsAction]);
 
   const filteredMaterialRequests = useMemo(() => {
@@ -70,8 +79,10 @@ export function useMaterialRequestTable(
 
       const matchesStatus =
         statusFilter === "all" || mr.status === statusFilter;
+
       const matchesPriority =
         priorityFilter === "all" || mr.priority === priorityFilter;
+
       const matchesDepartment =
         departmentFilter === "all" || mr.department?.id === departmentFilter;
 
