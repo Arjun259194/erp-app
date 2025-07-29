@@ -62,13 +62,7 @@ const adminGroups = [
 
 export default async function page() {
   const [user, error] = await auth();
-  if (error !== null)
-    redirect("/auth/login?message=" + encodeURIComponent(error));
+  if (error !== null) redirect("/auth/login?message=" + encodeURIComponent(error));
 
-  return (
-    <SectionGrid
-      groups={[...(user ? adminGroups : []), ...groups]}
-      pageTitle="Settings"
-    />
-  );
+  return <SectionGrid groups={[...(user ? adminGroups : []), ...groups]} pageTitle="Settings" />;
 }

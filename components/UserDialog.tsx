@@ -35,14 +35,7 @@ type Props = {
   onSave: () => void;
 };
 
-export default function UserDialog({
-  open,
-  setOpen,
-  form,
-  setForm,
-  editing,
-  onSave,
-}: Props) {
+export default function UserDialog({ open, setOpen, form, setForm, editing, onSave }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
@@ -54,22 +47,22 @@ export default function UserDialog({
           <Input
             placeholder="Name"
             value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            onChange={e => setForm({ ...form, name: e.target.value })}
           />
           <Input
             placeholder="Email"
             value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            onChange={e => setForm({ ...form, email: e.target.value })}
           />
           <Input
             placeholder="Password"
             type="password"
             value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            onChange={e => setForm({ ...form, password: e.target.value })}
           />
           <Select
             value={form.role}
-            onValueChange={(val) => setForm({ ...form, role: val as UserRole })}
+            onValueChange={val => setForm({ ...form, role: val as UserRole })}
           >
             <SelectTrigger>
               <SelectValue placeholder="Role" />
@@ -85,7 +78,7 @@ export default function UserDialog({
                 "Manufacturing",
                 "ProjectManager",
                 "Support",
-              ].map((role) => (
+              ].map(role => (
                 <SelectItem key={role} value={role}>
                   {role}
                 </SelectItem>
@@ -94,15 +87,13 @@ export default function UserDialog({
           </Select>
           <Select
             value={form.status}
-            onValueChange={(val) =>
-              setForm({ ...form, status: val as UserStatus })
-            }
+            onValueChange={val => setForm({ ...form, status: val as UserStatus })}
           >
             <SelectTrigger>
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
-              {["Active", "Inactive", "Suspended", "Pending"].map((status) => (
+              {["Active", "Inactive", "Suspended", "Pending"].map(status => (
                 <SelectItem key={status} value={status}>
                   {status}
                 </SelectItem>

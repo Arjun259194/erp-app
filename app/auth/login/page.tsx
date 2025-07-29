@@ -8,10 +8,7 @@ import { gotError } from "@/lib/redirects";
 export default async function page() {
   const settings = await Settings.getInstance();
   if (!settings)
-    return gotError(
-      "Unable to load gloabal settings",
-      "something went wrong when loading page",
-    );
+    return gotError("Unable to load gloabal settings", "something went wrong when loading page");
   const settingsState = settings.getState();
 
   return (
@@ -22,9 +19,7 @@ export default async function page() {
           {/* Logo and Title */}
           <div className="text-center">
             <div className="text-4xl text-foreground font-bold mb-2">ERP</div>
-            <h1 className="text-xl font-semibold text-secondary-foreground">
-              Login to ERPAPP
-            </h1>
+            <h1 className="text-xl font-semibold text-secondary-foreground">Login to ERPAPP</h1>
           </div>
 
           {/* Card Container */}

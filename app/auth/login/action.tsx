@@ -13,7 +13,7 @@ import { render } from "@react-email/components";
 import { cookies } from "next/headers";
 import z from "zod";
 
-export const handleLogin: ServerAction<{ name: string }> = async (formdata) => {
+export const handleLogin: ServerAction<{ name: string }> = async formdata => {
   "use server";
 
   const result = loginSchema.safeParse({
@@ -28,8 +28,7 @@ export const handleLogin: ServerAction<{ name: string }> = async (formdata) => {
   const user = await DB.FindUserByEmail(email);
 
   if (!user) throw new Error("No user found");
-  if (user.status === "Suspended")
-    throw new Error("You have bees suspended by admin");
+  if (user.status === "Suspended") throw new Error("You have bees suspended by admin");
 
   const hasher = BcryptPasswordHasher.getInstance();
   const isMatch = await hasher.compare(password, user.password);
@@ -59,7 +58,7 @@ export const handleLogin: ServerAction<{ name: string }> = async (formdata) => {
   return { name: user.name };
 };
 
-export const handleForgotPass: ServerAction = async (formdata) => {
+export const handleForgotPass: ServerAction = async formdata => {
   const safeEmail = z.string().email().safeParse(formdata.get("email"));
   if (!safeEmail.success) throw new Error(safeEmail.error.issues[0].message);
 
@@ -67,14 +66,10 @@ export const handleForgotPass: ServerAction = async (formdata) => {
 
   const user = await DB.FindUserByEmail(email);
   if (!user) throw new Error("Email doesn't exists, check credentials");
-  if (user.status === "Suspended")
-    throw new Error("You have bees suspended by admin");
+  if (user.status === "Suspended") throw new Error("You have bees suspended by admin");
 
   const recent = await DB.FindLatestForgotPasswordRequest(user.id);
-  if (recent)
-    throw new Error(
-      "Reset link already sent recently. Please wait a few minutes.",
-    );
+  if (recent) throw new Error("Reset link already sent recently. Please wait a few minutes.");
 
   const mailer = SMTPGmailService.getInstance(defMailCred);
   const jwtoken = JWToken.getInstance();
@@ -108,7 +103,7 @@ export const handleForgotPass: ServerAction = async (formdata) => {
   return;
 };
 
-export const handleLoginWithEmail: ServerAction = async (formdata) => {
+export const handleLoginWithEmail: ServerAction = async formdata => {
   const safeEmail = z.string().email().safeParse(formdata.get("email"));
   if (!safeEmail.success) throw new Error(safeEmail.error.issues[0].message);
 
@@ -117,15 +112,11 @@ export const handleLoginWithEmail: ServerAction = async (formdata) => {
   const user = await DB.FindUserByEmail(email);
 
   if (!user) throw new Error("Email doesn't exists, check credentials");
-  if (user.status === "Suspended")
-    throw new Error("You have bees suspended by admin");
+  if (user.status === "Suspended") throw new Error("You have bees suspended by admin");
 
   const recent = await DB.FindLatestEmailLoginRequest(user.id);
 
-  if (recent)
-    throw new Error(
-      "Login link already sent recently. Please wait a few minutes.",
-    );
+  if (recent) throw new Error("Login link already sent recently. Please wait a few minutes.");
 
   const mailer = SMTPGmailService.getInstance(defMailCred);
   const jwtoken = JWToken.getInstance();

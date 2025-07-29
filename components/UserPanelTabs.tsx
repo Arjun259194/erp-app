@@ -2,11 +2,7 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  GlobalSettings,
-  PublicRegistrationRequest,
-  User,
-} from "@/generated/prisma";
+import { GlobalSettings, PublicRegistrationRequest, User } from "@/generated/prisma";
 import UserAdminPanel from "./UserAdminPanel";
 import RegisterRequestPanel from "./RegisterRequestPanel";
 import { ServerAction } from "@/types";
@@ -15,23 +11,12 @@ interface Props {
   users: User[];
   settings: GlobalSettings | null;
   requests: PublicRegistrationRequest[];
-  acceptRequestAction: ServerAction<
-    void,
-    { id: string; customMessage?: string }
-  >;
-  rejectRequestAction: ServerAction<
-    void,
-    { id: string; customMessage?: string }
-  >;
+  acceptRequestAction: ServerAction<void, { id: string; customMessage?: string }>;
+  rejectRequestAction: ServerAction<void, { id: string; customMessage?: string }>;
   fetchRequests: ServerAction<PublicRegistrationRequest[], void>;
 }
 
-export default function TabsAdminPanel({
-  users,
-  settings,
-  requests,
-  ...actions
-}: Props) {
+export default function TabsAdminPanel({ users, settings, requests, ...actions }: Props) {
   return (
     <Tabs defaultValue="users" className="w-full">
       <TabsList className="mb-4">

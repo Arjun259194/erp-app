@@ -55,11 +55,7 @@ export default function ItemForm({ item }: ItemFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="price">Price</Label>
-            <Input
-              type="number"
-              step="0.01"
-              {...register("price", { valueAsNumber: true })}
-            />
+            <Input type="number" step="0.01" {...register("price", { valueAsNumber: true })} />
           </div>
         </div>
 
@@ -79,9 +75,7 @@ export default function ItemForm({ item }: ItemFormProps) {
               <Checkbox
                 id={key}
                 checked={watch(key as keyof ItemData) as boolean}
-                onCheckedChange={(checked) =>
-                  setValue(key as keyof ItemData, !!checked)
-                }
+                onCheckedChange={checked => setValue(key as keyof ItemData, !!checked)}
               />
               <Label htmlFor={key}>{label}</Label>
             </div>
@@ -92,9 +86,7 @@ export default function ItemForm({ item }: ItemFormProps) {
 
         <div className="grid grid-cols-3 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="overDeliveryAllowance">
-              Over Delivery Allowance (%)
-            </Label>
+            <Label htmlFor="overDeliveryAllowance">Over Delivery Allowance (%)</Label>
             <Input
               id="overDeliveryAllowance"
               type="number"
@@ -104,9 +96,7 @@ export default function ItemForm({ item }: ItemFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="overBillingAllowance">
-              Over Billing Allowance (%)
-            </Label>
+            <Label htmlFor="overBillingAllowance">Over Billing Allowance (%)</Label>
             <Input
               id="overBillingAllowance"
               type="number"

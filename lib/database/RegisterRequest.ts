@@ -2,12 +2,7 @@ import { RegisterRequestState } from "@/generated/prisma";
 import { prisma } from ".";
 
 export const registerRequest = {
-  async NewRequest(data: {
-    email: string;
-    password: string;
-    name: string;
-    reason: string;
-  }) {
+  async NewRequest(data: { email: string; password: string; name: string; reason: string }) {
     return await prisma.publicRegistrationRequest.create({
       data,
     });

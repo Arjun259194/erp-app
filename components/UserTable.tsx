@@ -31,7 +31,7 @@ export default function UserTable({ users, onEdit, onDelete }: Props) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
+          {users.map(user => (
             <TableRow key={user.id}>
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
@@ -59,10 +59,7 @@ export default function UserTable({ users, onEdit, onDelete }: Props) {
           ))}
           {users.length === 0 && (
             <TableRow>
-              <TableCell
-                colSpan={5}
-                className="text-center text-muted-foreground py-4"
-              >
+              <TableCell colSpan={5} className="text-center text-muted-foreground py-4">
                 No users found.
               </TableCell>
             </TableRow>

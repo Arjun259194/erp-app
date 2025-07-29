@@ -41,7 +41,7 @@ export function PublicRegistrationForm({ action }: Props) {
     const promise = action(data);
     toast.promise(promise, {
       loading: "Logging in...",
-      error: (err) => err.message || "Login failed",
+      error: err => err.message || "Login failed",
       success: () => {
         return `Your request has been sent to admin, wait for our email`;
       },
@@ -55,17 +55,13 @@ export function PublicRegistrationForm({ action }: Props) {
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
         <Input id="name" {...register("name")} />
-        {errors.name && (
-          <p className="text-sm text-red-500">{errors.name.message}</p>
-        )}
+        {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input id="email" type="email" {...register("email")} />
-        {errors.email && (
-          <p className="text-sm text-red-500">{errors.email.message}</p>
-        )}
+        {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
       </div>
 
       <div className="space-y-2">
@@ -78,27 +74,19 @@ export function PublicRegistrationForm({ action }: Props) {
           />
           <button
             type="button"
-            onClick={() => setShowPassword((s) => !s)}
+            onClick={() => setShowPassword(s => !s)}
             className="absolute right-2 top-1/2 -translate-y-1/2"
           >
-            {showPassword ? (
-              <EyeOff className="w-4 h-4" />
-            ) : (
-              <Eye className="w-4 h-4" />
-            )}
+            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
         </div>
-        {errors.password && (
-          <p className="text-sm text-red-500">{errors.password.message}</p>
-        )}
+        {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="reason">Reason</Label>
         <Textarea id="reason" {...register("reason")} />
-        {errors.reason && (
-          <p className="text-sm text-red-500">{errors.reason.message}</p>
-        )}
+        {errors.reason && <p className="text-sm text-red-500">{errors.reason.message}</p>}
       </div>
 
       <Button type="submit" className="w-full">

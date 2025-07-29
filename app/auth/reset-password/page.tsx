@@ -29,10 +29,7 @@ export default async function page({ searchParams }: Props) {
 
   const request = await DB.FindLatestForgotPasswordRequest(payload.data.id);
 
-  if (!request)
-    return redirect(
-      `/auth/login?message=${encodeURIComponent("No request found")}`,
-    );
+  if (!request) return redirect(`/auth/login?message=${encodeURIComponent("No request found")}`);
 
   return (
     <main className="min-h-screen flex items-center justify-center">
@@ -40,8 +37,7 @@ export default async function page({ searchParams }: Props) {
         <CardContent className="p-5 space-y-4">
           <h1 className="text-2xl font-bold">Reset your password</h1>
           <p className="text-sm text-muted-foreground">
-            Set a new password for the account associated with{" "}
-            <b>{payload.data.email}</b>.
+            Set a new password for the account associated with <b>{payload.data.email}</b>.
           </p>
           <ResetPasswordForm action={handleResetPassword} token={token} />
         </CardContent>

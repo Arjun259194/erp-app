@@ -30,14 +30,11 @@ export default function SystemSettings({ settings, actions }: Props) {
 
   console.log("settings:", settings);
 
-  const { form, update, isDirty, loading, onSubmit, reset } = useSettings(
-    settings,
-    actions,
-  );
+  const { form, update, isDirty, loading, onSubmit, reset } = useSettings(settings, actions);
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={e => {
         e.preventDefault();
         onSubmit();
       }}
@@ -49,7 +46,7 @@ export default function SystemSettings({ settings, actions }: Props) {
             label: "Public Registration",
             type: "toggle",
             value: form.public_registration,
-            onChange: (val) => update("public_registration", !!val as boolean),
+            onChange: val => update("public_registration", !!val as boolean),
             tooltipText: "Enables public registration. Admin approval required",
             description:
               "Allow users to have a public interface for registration. User will be able to request registration to the system. will require admin permission",

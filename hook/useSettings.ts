@@ -15,11 +15,8 @@ export function useSettings(
   const [loading, setLoading] = useState(false);
   const [dirty, setDirty] = useState(false);
 
-  const update = <K extends keyof GlobalSettings>(
-    key: K,
-    value: GlobalSettings[K],
-  ) => {
-    setForm((prev) => {
+  const update = <K extends keyof GlobalSettings>(key: K, value: GlobalSettings[K]) => {
+    setForm(prev => {
       return { ...prev, [key]: value };
     });
   };
@@ -40,7 +37,7 @@ export function useSettings(
 
     toast.promise(promise, {
       loading: "Saving...",
-      error: (err) => {
+      error: err => {
         console.error(err);
         return err.message || "Something went wrong";
       },

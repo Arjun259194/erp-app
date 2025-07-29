@@ -2,11 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { formatDistanceToNow } from "date-fns";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Heart, MessageCircle, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TableCell, TableRow } from "./ui/table";

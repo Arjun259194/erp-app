@@ -31,10 +31,7 @@ const UpdateSchema = z.object({
   password: z.string().min(6).optional(),
   role: z.enum(userRoles).optional(),
   status: z
-    .enum(["Active", "Inactive", "Suspended", "Pending"] satisfies [
-      UserStatus,
-      ...UserStatus[],
-    ])
+    .enum(["Active", "Inactive", "Suspended", "Pending"] satisfies [UserStatus, ...UserStatus[]])
     .optional(),
 });
 

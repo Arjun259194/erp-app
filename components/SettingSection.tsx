@@ -28,11 +28,7 @@ interface SettingsSectionProps {
   className?: string;
 }
 
-export function SettingsSection({
-  title,
-  options,
-  className,
-}: SettingsSectionProps) {
+export function SettingsSection({ title, options, className }: SettingsSectionProps) {
   return (
     <section className={cn("mb-8", className)}>
       <h2 className="text-lg font-semibold mb-4">{title}</h2>
@@ -47,9 +43,7 @@ export function SettingsSection({
                 <div className="text-start space-y-1">
                   <div className="text-sm font-medium">{opt.label}</div>
                   {opt.description && (
-                    <div className="text-xs text-muted-foreground">
-                      {opt.description}
-                    </div>
+                    <div className="text-xs text-muted-foreground">{opt.description}</div>
                   )}
                 </div>
 
@@ -67,7 +61,7 @@ export function SettingsSection({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {opt.options?.map((v) => (
+                      {opt.options?.map(v => (
                         <SelectItem key={v} value={v}>
                           {v}
                         </SelectItem>

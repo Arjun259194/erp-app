@@ -15,8 +15,11 @@ export function MaterialRequestTableRow({ materialRequest }: MaterialRequestTabl
   return (
     <TableRow>
       <TableCell>
-        <Link className="text-blue-600 hover:underline" href={`/material-request/${materialRequest.id}`}>
-        View
+        <Link
+          className="text-blue-600 hover:underline"
+          href={`/material-request/${materialRequest.id}`}
+        >
+          View
         </Link>
       </TableCell>
       <TableCell>{materialRequest.requestNumber}</TableCell>

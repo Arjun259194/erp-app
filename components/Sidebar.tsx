@@ -103,7 +103,7 @@ export default function SideBarLayout({ children, user }: Props) {
       <Topbar />
       {/* Topbar */}
       <div className="h-14 shrink-0 border-b flex items-center px-4">
-        <Button onClick={() => setIsOpen((prev) => !prev)} variant="ghost">
+        <Button onClick={() => setIsOpen(prev => !prev)} variant="ghost">
           {isOpen ? <ChevronsLeft /> : <ChevronsRight />}
         </Button>
 
@@ -120,20 +120,10 @@ export default function SideBarLayout({ children, user }: Props) {
 }
 
 // ✅ Sidebar Component
-function Sidebar({
-  isOpen,
-  items,
-  user,
-}: {
-  isOpen: boolean;
-  user: User;
-  items: SideBarItem[];
-}) {
+function Sidebar({ isOpen, items, user }: { isOpen: boolean; user: User; items: SideBarItem[] }) {
   return (
     <aside
-      className={`${
-        isOpen ? "w-64" : "hidden"
-      } border-r overflow-y-auto px-2 py-4 bg-background`}
+      className={`${isOpen ? "w-64" : "hidden"} border-r overflow-y-auto px-2 py-4 bg-background`}
     >
       <Items items={items} />
     </aside>
@@ -144,7 +134,7 @@ function Sidebar({
 function Items({ items }: { items: SideBarItem[] }) {
   return (
     <>
-      {items.map((item) => (
+      {items.map(item => (
         <Item key={item.name} item={item} />
       ))}
     </>
@@ -162,7 +152,7 @@ function Item({ item }: { item: SideBarItem }) {
           <Button
             className="w-full justify-between"
             variant="ghost"
-            onClick={() => setOpen((prev) => !prev)}
+            onClick={() => setOpen(prev => !prev)}
           >
             <div className="flex items-center space-x-2">
               <item.Icon className="text-primary" size={16} />
@@ -171,10 +161,7 @@ function Item({ item }: { item: SideBarItem }) {
             {open ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
           </Button>
           <div className="ml-5">
-            {open &&
-              item.children.map((child) => (
-                <Item key={child.name} item={child} />
-              ))}
+            {open && item.children.map(child => <Item key={child.name} item={child} />)}
           </div>
         </>
       ) : (

@@ -4,10 +4,7 @@ export async function POST(req: Request) {
   const { token } = await req.json();
 
   if (!token) {
-    return NextResponse.json(
-      { success: false, error: "Missing token" },
-      { status: 400 },
-    );
+    return NextResponse.json({ success: false, error: "Missing token" }, { status: 400 });
   }
 
   const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
@@ -19,10 +16,7 @@ export async function POST(req: Request) {
   const data = await res.json();
 
   if (!data.success) {
-    return NextResponse.json(
-      { success: false, error: "Captcha failed" },
-      { status: 400 },
-    );
+    return NextResponse.json({ success: false, error: "Captcha failed" }, { status: 400 });
   }
 
   return NextResponse.json({ success: true });

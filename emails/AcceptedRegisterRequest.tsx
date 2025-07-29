@@ -51,14 +51,12 @@ export function AcceptedRegistrerRequest({
             <Text className="text-sm text-slate-700 mb-4">Hi {username},</Text>
 
             <Text className="text-sm text-slate-700 mb-4 leading-relaxed">
-              Your registration request has been approved! You can now access
-              your account by clicking the button below.
+              Your registration request has been approved! You can now access your account by
+              clicking the button below.
             </Text>
 
             {customMessage && (
-              <Text className="text-sm text-slate-700 mb-4 italic">
-                {customMessage}
-              </Text>
+              <Text className="text-sm text-slate-700 mb-4 italic">{customMessage}</Text>
             )}
 
             {loginUrl && (
@@ -74,17 +72,13 @@ export function AcceptedRegistrerRequest({
 
             <Text className="text-xs text-slate-400">
               Need help? Contact us at{" "}
-              <Link
-                href="mailto:support@yourcompany.com"
-                className="text-blue-600 underline"
-              >
+              <Link href="mailto:support@yourcompany.com" className="text-blue-600 underline">
                 support@yourcompany.com
               </Link>
             </Text>
 
             <Text className="text-[11px] text-slate-400 mt-2">
-              © {new Date().getFullYear()} YourCompany Inc. All rights
-              reserved.
+              © {new Date().getFullYear()} YourCompany Inc. All rights reserved.
             </Text>
           </Container>
         </Body>

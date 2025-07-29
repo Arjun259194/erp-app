@@ -10,8 +10,7 @@ interface Props {
 
 export default async function AuthorizedLayout({ children }: Props) {
   const [user, error] = await auth();
-  if (error !== null)
-    redirect("/auth/login?message=" + encodeURIComponent(error));
+  if (error !== null) redirect("/auth/login?message=" + encodeURIComponent(error));
 
   return (
     <>

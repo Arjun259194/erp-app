@@ -10,9 +10,10 @@ export const items = {
     });
   },
 
-  async UpdateItemById<
-    T extends Parameters<PrismaClient["item"]["update"]>[0]["data"],
-  >(id: string, data: T) {
+  async UpdateItemById<T extends Parameters<PrismaClient["item"]["update"]>[0]["data"]>(
+    id: string,
+    data: T,
+  ) {
     return await prisma.item.update({
       where: {
         id,

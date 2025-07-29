@@ -6,13 +6,13 @@ type Props = ButtonProps & { action: () => Promise<void> };
 export default function LogoutButton({ children, action, ...props }: Props) {
   return (
     <Button
-      onClick={async (event) => {
+      onClick={async event => {
         event.preventDefault();
         const promise = action();
 
         toast.promise(promise, {
           loading: "loading...",
-          error: (err) => {
+          error: err => {
             return err.message || "something went wrong";
           },
           success: () => {

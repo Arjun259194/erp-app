@@ -9,14 +9,14 @@ const SalesSchema = z.object({
   allowAlternativeItem: z.string().optional(),
   overDeliveryAllowance: z
     .string()
-    .transform((v) => parseFloat(v || "0"))
-    .refine((n) => !isNaN(n) && n >= 0 && n <= 100, {
+    .transform(v => parseFloat(v || "0"))
+    .refine(n => !isNaN(n) && n >= 0 && n <= 100, {
       message: "Over delivery allowance must be between 0-100%",
     }),
   overBillingAllowance: z
     .string()
-    .transform((v) => parseFloat(v || "0"))
-    .refine((n) => !isNaN(n) && n >= 0 && n <= 100, {
+    .transform(v => parseFloat(v || "0"))
+    .refine(n => !isNaN(n) && n >= 0 && n <= 100, {
       message: "Over billing allowance must be between 0-100%",
     }),
 });

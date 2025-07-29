@@ -28,10 +28,7 @@ export class MailBuilder<T extends Partial<BuilderInputs>> {
     return new MailBuilder({ ...this.#actual, subject });
   }
 
-  async build(
-    this: MailBuilder<BuilderInputs>,
-    html: string,
-  ): Promise<Mail.Options> {
+  async build(this: MailBuilder<BuilderInputs>, html: string): Promise<Mail.Options> {
     return {
       from: this.#actual.from,
       to: this.#actual.to,

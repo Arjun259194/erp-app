@@ -6,7 +6,7 @@ import BcryptPasswordHasher from "@/lib/hash";
 import { ServerAction } from "@/types";
 import { z } from "zod";
 
-export const resetPassword: ServerAction = async (form) => {
+export const resetPassword: ServerAction = async form => {
   const safe = z.string().min(6).safeParse(form.get("password"));
   if (!safe.success) throw new Error(safe.error.issues[0].message);
 

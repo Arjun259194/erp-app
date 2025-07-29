@@ -38,7 +38,7 @@ export function ItemTableHeader({
       <Input
         placeholder="Search items by name..."
         value={search}
-        onChange={(e) => onSearchChange(e.target.value)}
+        onChange={e => onSearchChange(e.target.value)}
         className="max-w-xs"
       />
 
@@ -46,9 +46,7 @@ export function ItemTableHeader({
         <Label htmlFor="status">Status</Label>
         <Select
           value={filterStatus ?? ""}
-          onValueChange={(value) =>
-            onFilterChange(value === "All" ? null : value)
-          }
+          onValueChange={value => onFilterChange(value === "All" ? null : value)}
         >
           <SelectTrigger id="status" className="w-[160px]">
             <SelectValue placeholder="All statuses" />
@@ -64,9 +62,7 @@ export function ItemTableHeader({
         <Label htmlFor="status">Group by</Label>
         <Select
           value={group ?? ""}
-          onValueChange={(value) =>
-            onGroupChange(value === "All" ? null : value)
-          }
+          onValueChange={value => onGroupChange(value === "All" ? null : value)}
         >
           <SelectTrigger id="status" className="w-[160px]">
             <SelectValue placeholder="All groups" />
@@ -89,11 +85,7 @@ export function ItemTableHeader({
         </DialogTrigger>
         <DialogContent>
           <DialogTitle>Create new item</DialogTitle>
-          <CreateItemForm
-            reload={reload}
-            createItemAction={createItemAction}
-            itemGroups={groups}
-          />
+          <CreateItemForm reload={reload} createItemAction={createItemAction} itemGroups={groups} />
         </DialogContent>
       </Dialog>
     </div>

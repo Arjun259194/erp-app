@@ -54,8 +54,8 @@ export function LoginForm({ loginAction, ...props }: Props) {
 
     toast.promise(promise, {
       loading: "Logging in...",
-      error: (err) => err.message || "Login failed",
-      success: (data) => {
+      error: err => err.message || "Login failed",
+      success: data => {
         const message = encodeURIComponent(
           `Welcome back ${data.name}! You have successfully logged in`,
         );
@@ -69,15 +69,8 @@ export function LoginForm({ loginAction, ...props }: Props) {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="jane@example.com"
-          {...register("email")}
-        />
-        {errors.email && (
-          <p className="text-sm text-red-500">{errors.email.message}</p>
-        )}
+        <Input id="email" type="email" placeholder="jane@example.com" {...register("email")} />
+        {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
@@ -89,24 +82,15 @@ export function LoginForm({ loginAction, ...props }: Props) {
           />
           <button
             type="button"
-            onClick={() => setShowPassword((prev) => !prev)}
+            onClick={() => setShowPassword(prev => !prev)}
             className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground"
           >
-            {showPassword ? (
-              <EyeOff className="h-4 w-4" />
-            ) : (
-              <Eye className="h-4 w-4" />
-            )}
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
         </div>
-        {errors.password && (
-          <p className="text-sm text-red-500">{errors.password.message}</p>
-        )}
+        {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
         <div className="text-right text-sm text-muted-foreground">
-          <ForgotPasswordDialog
-            action={props.forgotPasswordAction}
-            defaultEmail={email}
-          />
+          <ForgotPasswordDialog action={props.forgotPasswordAction} defaultEmail={email} />
         </div>
       </div>
 
@@ -116,10 +100,7 @@ export function LoginForm({ loginAction, ...props }: Props) {
 
       <div className="text-center text-sm text-muted-foreground">or</div>
 
-      <LoginWithEmail
-        action={props.loginWithEmailAction}
-        defaultEmail={email}
-      />
+      <LoginWithEmail action={props.loginWithEmailAction} defaultEmail={email} />
 
       {!!props.publicRegistraction ? (
         <div className="text-center text-sm text-muted-foreground">
@@ -135,10 +116,7 @@ interface ForgotPasswordDialogProps {
   action: ServerAction;
 }
 
-const ForgotPasswordDialog = ({
-  defaultEmail,
-  action,
-}: ForgotPasswordDialogProps) => {
+const ForgotPasswordDialog = ({ defaultEmail, action }: ForgotPasswordDialogProps) => {
   const [email, setEmail] = useState("");
 
   // will give priority to parent form state
@@ -156,7 +134,7 @@ const ForgotPasswordDialog = ({
 
     toast.promise(promise, {
       loading: "Processing...",
-      error: (err) => err.message || "Something went wrong",
+      error: err => err.message || "Something went wrong",
       success: () => "Email sent, check you given email",
     });
   };
@@ -172,15 +150,14 @@ const ForgotPasswordDialog = ({
         </DialogHeader>
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Enter the email address associated with your account. We’ll send you
-            a secure link to reset your password. If you no longer have access
-            to this email, please contact support.
+            Enter the email address associated with your account. We’ll send you a secure link to
+            reset your password. If you no longer have access to this email, please contact support.
           </p>
           <Input
             type="email"
             placeholder="you@example.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
           />
           <Button type="button" className="w-full" onClick={handleSubmit}>
             Send Reset Link
@@ -219,7 +196,7 @@ const LoginWithEmail = ({ defaultEmail, action }: LoginWithEmailProps) => {
 
     toast.promise(promise, {
       loading: "Sending email...",
-      error: (err) => err.message || "Something went wrong",
+      error: err => err.message || "Something went wrong",
       success: () => "Email send, check you inbox",
     });
   };
@@ -237,15 +214,14 @@ const LoginWithEmail = ({ defaultEmail, action }: LoginWithEmailProps) => {
         </DialogHeader>
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Enter your email address, and we'll send you a secure login link.
-            Make sure the address is correct before continuing, as the link will
-            expire shortly after it's sent.
+            Enter your email address, and we'll send you a secure login link. Make sure the address
+            is correct before continuing, as the link will expire shortly after it's sent.
           </p>
           <Input
             type="email"
             placeholder="you@example.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
           />
           <Button type="button" className="w-full" onClick={handleSubmit}>
             Send Login Link

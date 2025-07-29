@@ -29,7 +29,7 @@ export default function ResetPasswordForm({ token, action }: Props) {
 
     toast.promise(promise, {
       loading: "Resetting password...",
-      error: (err) => {
+      error: err => {
         return err.message || "Failed";
       },
       success: () => {
@@ -45,12 +45,7 @@ export default function ResetPasswordForm({ token, action }: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <Input
-        type="password"
-        placeholder="New password"
-        {...register("password")}
-        required
-      />
+      <Input type="password" placeholder="New password" {...register("password")} required />
       <Button type="submit" className="w-full">
         Reset Password
       </Button>

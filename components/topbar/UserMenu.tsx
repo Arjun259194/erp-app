@@ -23,14 +23,11 @@ export function UserMenu({ logoutAction }: Props) {
   const logoutOnSelect = () => {
     toast.promise(logoutAction(), {
       loading: "loading...",
-      error: (err) => {
+      error: err => {
         return err.message || "something went wrong";
       },
       success: () => {
-        router.push(
-          "/auth/login?message=" +
-            encodeURIComponent("You have been logged out"),
-        );
+        router.push("/auth/login?message=" + encodeURIComponent("You have been logged out"));
         return "Logged out";
       },
     });

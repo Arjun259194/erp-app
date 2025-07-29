@@ -25,31 +25,16 @@ import { Eye, EyeOff, RotateCcw } from "lucide-react";
 import { PublicRegistrationRequest } from "@/generated/prisma";
 import { ServerAction } from "@/types";
 import { usePublicRegistrationPanel } from "@/hook/usePublicRegistraction";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 interface Props {
   requests: PublicRegistrationRequest[];
-  acceptRequestAction: ServerAction<
-    void,
-    { id: string; customMessage?: string }
-  >;
-  rejectRequestAction: ServerAction<
-    void,
-    { id: string; customMessage?: string }
-  >;
+  acceptRequestAction: ServerAction<void, { id: string; customMessage?: string }>;
+  rejectRequestAction: ServerAction<void, { id: string; customMessage?: string }>;
   fetchRequests: ServerAction<PublicRegistrationRequest[], void>;
 }
 
-export default function PublicRegistrationTable({
-  requests,
-  ...actions
-}: Props) {
+export default function PublicRegistrationTable({ requests, ...actions }: Props) {
   const {
     refresh,
     search,
@@ -77,10 +62,10 @@ export default function PublicRegistrationTable({
         <Input
           placeholder="Search by name or email..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={e => setSearch(e.target.value)}
           className="max-w-sm"
         />
-        <Select value={filter} onValueChange={(val) => setFilter(val as any)}>
+        <Select value={filter} onValueChange={val => setFilter(val as any)}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Filter status" />
           </SelectTrigger>
@@ -109,7 +94,7 @@ export default function PublicRegistrationTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filtered.map((r) => (
+            {filtered.map(r => (
               <TableRow key={r.id}>
                 <TableCell>{r.name}</TableCell>
                 <TableCell>{r.email}</TableCell>
@@ -151,44 +136,30 @@ export default function PublicRegistrationTable({
                         <div className="mt-2 p-5 space-y-6">
                           <div className="grid gap-3">
                             <div>
-                              <p className="text-sm text-muted-foreground">
-                                Name
-                              </p>
-                              <p className="font-medium text-base">
-                                {selected.name}
-                              </p>
+                              <p className="text-sm text-muted-foreground">Name</p>
+                              <p className="font-medium text-base">{selected.name}</p>
                             </div>
                             <div>
-                              <p className="text-sm text-muted-foreground">
-                                Email
-                              </p>
-                              <p className="font-medium text-base">
-                                {selected.email}
-                              </p>
+                              <p className="text-sm text-muted-foreground">Email</p>
+                              <p className="font-medium text-base">{selected.email}</p>
                             </div>
                             <div>
-                              <p className="text-sm text-muted-foreground">
-                                Reason
-                              </p>
+                              <p className="text-sm text-muted-foreground">Reason</p>
                               <p className="font-medium text-base whitespace-pre-line">
                                 {selected.reason}
                               </p>
                             </div>
                             <div className="flex items-center gap-2">
                               <div className="grow">
-                                <p className="text-sm text-muted-foreground">
-                                  Password
-                                </p>
+                                <p className="text-sm text-muted-foreground">Password</p>
                                 <p className="font-mono text-base">
-                                  {showPassword
-                                    ? selected.password
-                                    : "••••••••"}
+                                  {showPassword ? selected.password : "••••••••"}
                                 </p>
                               </div>
                               <Button
                                 size="icon"
                                 variant="ghost"
-                                onClick={() => setShowPassword((prev) => !prev)}
+                                onClick={() => setShowPassword(prev => !prev)}
                                 className="mt-6"
                               >
                                 {showPassword ? (
@@ -201,13 +172,11 @@ export default function PublicRegistrationTable({
                           </div>
 
                           <div className="grid gap-2">
-                            <p className="text-sm text-muted-foreground">
-                              Custom Message
-                            </p>
+                            <p className="text-sm text-muted-foreground">Custom Message</p>
                             <Textarea
                               placeholder="Write a custom message for approval or rejection..."
                               value={message}
-                              onChange={(e) => setMessage(e.target.value)}
+                              onChange={e => setMessage(e.target.value)}
                             />
                           </div>
 
@@ -226,10 +195,7 @@ export default function PublicRegistrationTable({
                             >
                               Reject
                             </Button>
-                            <Button
-                              variant="ghost"
-                              onClick={() => setMessage("")}
-                            >
+                            <Button variant="ghost" onClick={() => setMessage("")}>
                               Clear
                             </Button>
                           </div>

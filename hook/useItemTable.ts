@@ -6,17 +6,14 @@ export type ItemData = Item & {
   ItemGroup: ItemGroup | null;
 };
 
-export function useItemTable(
-  initialItems: ItemData[],
-  fetchItems: ServerAction<ItemData[], void>,
-) {
+export function useItemTable(initialItems: ItemData[], fetchItems: ServerAction<ItemData[], void>) {
   const [items, setItems] = useState<ItemData[]>(initialItems);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
   const [group, setGroup] = useState<string | null>(null);
 
   const filteredItems = items.filter(
-    (item) =>
+    item =>
       item.name.toLowerCase().includes(search.toLowerCase()) &&
       (!filterStatus || item.status === filterStatus) &&
       (!group || item.ItemGroup?.name === group),
@@ -25,7 +22,7 @@ export function useItemTable(
   const refreshItems = async () => {
     try {
       const data = await fetchItems();
-      setItems((_) => data);
+      setItems(_ => data);
     } catch (err) {
       console.error("Failed to fetch items:", err);
     }

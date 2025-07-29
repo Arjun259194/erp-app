@@ -39,19 +39,15 @@ export function ModeDialog({
           <DialogTitle>Select Theme</DialogTitle>
         </DialogHeader>
         <div className="grid grid-cols-3 gap-5 p-2">
-          {options.map((option) => (
+          {options.map(option => (
             <button
               key={option.value}
               onClick={() => setTheme(option.value)}
               className={`rounded-lg border text-center p-1 space-y-1 ${
-                current === option.value
-                  ? "ring-2 ring-primary"
-                  : "border-muted"
+                current === option.value ? "ring-2 ring-primary" : "border-muted"
               }`}
             >
-              <div
-                className={`${option.value} w-12 h-8 md:w-36 md:h-24 rounded mx-auto`}
-              >
+              <div className={`${option.value} w-12 h-8 md:w-36 md:h-24 rounded mx-auto`}>
                 <div className="w-full h-full rounded-xl border bg-background shadow p-1 flex flex-col justify-between relative">
                   {/* Top navbar-like element */}
                   <div className="flex justify-between px-2 py-1">
@@ -64,11 +60,7 @@ export function ModeDialog({
 
                   {/* Bottom floating check button */}
                   <div className="absolute bottom-2 right-2 w-5 h-5 rounded-full bg-foreground text-background flex items-center justify-center">
-                    <svg
-                      className="w-3 h-3"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
+                    <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
                       <path
                         fillRule="evenodd"
                         d="M16.707 5.293a1 1 0 00-1.414 0L9 11.586 6.707 9.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l7-7a1 1 0 000-1.414z"

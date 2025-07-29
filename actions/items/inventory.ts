@@ -10,9 +10,9 @@ const InventorySchema = z.object({
 });
 
 export async function inventoryAction(fd: FormData) {
-    console.log(fd)
+  console.log(fd);
   const data = Object.fromEntries(fd);
-  console.log(data)
+  console.log(data);
   const parsed = InventorySchema.parse(data);
 
   await DB.UpdateItemById(parsed.id, {

@@ -2,13 +2,7 @@
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ItemTableHeader } from "./ItemTableHeader";
 import { ItemTableRow } from "./ItemTableRow";
 import { ServerAction } from "@/types";
@@ -24,16 +18,8 @@ export function ItemTable({
   groups: { id: string; name: string }[];
   fetchItemsAction: ServerAction<ItemData[], void>;
 }) {
-  const {
-    items,
-    search,
-    setSearch,
-    filterStatus,
-    setFilterStatus,
-    group,
-    setGroup,
-    refreshItems,
-  } = useItemTable(initialItems, fetchItems);
+  const { items, search, setSearch, filterStatus, setFilterStatus, group, setGroup, refreshItems } =
+    useItemTable(initialItems, fetchItems);
 
   return (
     <TooltipProvider>
@@ -65,7 +51,7 @@ export function ItemTable({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {items.map((item) => (
+              {items.map(item => (
                 <ItemTableRow key={item.id} item={item} />
               ))}
             </TableBody>

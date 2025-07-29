@@ -11,19 +11,12 @@ export const loginSchema = z.object({
 });
 
 // Your `ItemState` enum has these values in the Prisma schema
-export const itemStatusOptions = [
-  "Active",
-  "InActive",
-  "OutOfStock",
-  "PreOrder",
-] as const;
+export const itemStatusOptions = ["Active", "InActive", "OutOfStock", "PreOrder"] as const;
 
 export type ItemState = (typeof itemStatusOptions)[number];
 
 // Utility Zod parser to handle checkbox values
-const checkboxToBool = z
-  .union([z.literal("on"), z.undefined()])
-  .transform((val) => val === "on");
+const checkboxToBool = z.union([z.literal("on"), z.undefined()]).transform(val => val === "on");
 
 // ✅ Zod schema for your Item form (server action compatible)
 export const ItemFormSchema = z.object({

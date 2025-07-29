@@ -23,9 +23,7 @@ export default async function page() {
           {/* Logo and Title */}
           <div className="text-center">
             <div className="text-4xl text-foreground font-bold mb-2">ERP</div>
-            <h1 className="text-xl font-semibold text-secondary-foreground">
-              Login to ERPAPP
-            </h1>
+            <h1 className="text-xl font-semibold text-secondary-foreground">Login to ERPAPP</h1>
           </div>
 
           {/* Card Container */}

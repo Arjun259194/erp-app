@@ -38,13 +38,12 @@ export function useUserAdmin(initialUsers: User[], actions: PropsActions) {
   const [statusFilter, setStatusFilter] = useState<"All" | UserStatus>("All");
 
   const filteredUsers = useMemo(() => {
-    return users.filter((user) => {
+    return users.filter(user => {
       const matchSearch =
         user.name.toLowerCase().includes(search.toLowerCase()) ||
         user.email.toLowerCase().includes(search.toLowerCase());
       const matchRole = roleFilter === "All" || user.role === roleFilter;
-      const matchStatus =
-        statusFilter === "All" || user.status === statusFilter;
+      const matchStatus = statusFilter === "All" || user.status === statusFilter;
       return matchSearch && matchRole && matchStatus;
     });
   }, [users, search, roleFilter, statusFilter]);
@@ -82,7 +81,7 @@ export function useUserAdmin(initialUsers: User[], actions: PropsActions) {
       success: () => {
         return "User deleted successfully!";
       },
-      error: (err) => {
+      error: err => {
         console.error(err);
         return err.message || "Failed to delete user.";
       },
@@ -124,7 +123,7 @@ export function useUserAdmin(initialUsers: User[], actions: PropsActions) {
         });
         return "User saved successfully!";
       },
-      error: (err) => {
+      error: err => {
         console.error(err);
         return err.message || "Failed to save user.";
       },

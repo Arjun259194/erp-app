@@ -14,8 +14,7 @@ export async function GET(request: NextRequest) {
     );
 
   const payload = JWToken.getInstance().deserialize(token);
-  if (!payload)
-    return gotError("Token expired", "Your link is expired and can't be used");
+  if (!payload) return gotError("Token expired", "Your link is expired and can't be used");
 
   const user = await DB.FindUserById(payload.data.id);
   if (!user)
@@ -26,11 +25,7 @@ export async function GET(request: NextRequest) {
 
   const req = await DB.FindLatestEmailLoginRequest(user.id);
 
-  if (!req)
-    return gotError(
-      "Request expired",
-      "Your email login request is expired, try again",
-    );
+  if (!req) return gotError("Request expired", "Your email login request is expired, try again");
 
   const exp = Date.now() + 60 * 60 * 24;
 

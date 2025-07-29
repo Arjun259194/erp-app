@@ -22,18 +22,9 @@ type CreateItemFormProps = {
   itemGroups: { id: string; name: string }[];
   reload: () => void;
 };
-const itemStatusOptions = [
-  "Active",
-  "InActive",
-  "OutOfStock",
-  "PreOrder",
-] satisfies ItemState[];
+const itemStatusOptions = ["Active", "InActive", "OutOfStock", "PreOrder"] satisfies ItemState[];
 
-export function CreateItemForm({
-  createItemAction,
-  itemGroups,
-  reload,
-}: CreateItemFormProps) {
+export function CreateItemForm({ createItemAction, itemGroups, reload }: CreateItemFormProps) {
   const [formState, setFormState] = useState({
     sku: "",
     name: "",
@@ -44,15 +35,13 @@ export function CreateItemForm({
     itemGroupId: "",
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormState((prev) => ({ ...prev, [name]: value }));
+    setFormState(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormState((prev) => ({ ...prev, [name]: value }));
+    setFormState(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -69,7 +58,7 @@ export function CreateItemForm({
 
     toast.promise(promise, {
       loading: "loading...",
-      error: (error) => error.message || "Something went wrong",
+      error: error => error.message || "Something went wrong",
       success: () => {
         reload();
         return "Done";
@@ -81,24 +70,12 @@ export function CreateItemForm({
     <form onSubmit={handleSubmit} className="space-y-3">
       <div className="space-y-2">
         <Label htmlFor="sku">SKU</Label>
-        <Input
-          name="sku"
-          id="sku"
-          value={formState.sku}
-          onChange={handleChange}
-          required
-        />
+        <Input name="sku" id="sku" value={formState.sku} onChange={handleChange} required />
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
-        <Input
-          name="name"
-          id="name"
-          value={formState.name}
-          onChange={handleChange}
-          required
-        />
+        <Input name="name" id="name" value={formState.name} onChange={handleChange} required />
       </div>
 
       <div className="space-y-2">
@@ -114,16 +91,9 @@ export function CreateItemForm({
       <div className="grid grid-cols-3 gap-2">
         <div className="space-y-2 col-span-2">
           <Label>Status</Label>
-          <Select
-            value={formState.status}
-            onValueChange={(val) => handleSelectChange("status", val)}
-          >
+          <Select value={formState.status} onValueChange={val => handleSelectChange("status", val)}>
             <SelectTrigger className="w-full">
-              <SelectValue
-                defaultChecked
-                defaultValue="Active"
-                placeholder="Select status"
-              />
+              <SelectValue defaultChecked defaultValue="Active" placeholder="Select status" />
             </SelectTrigger>
             <SelectContent>
               {itemStatusOptions.map((status, index) => (
@@ -163,7 +133,7 @@ export function CreateItemForm({
           <Label>Item Group</Label>
           <Select
             value={formState.itemGroupId}
-            onValueChange={(val) => handleSelectChange("itemGroupId", val)}
+            onValueChange={val => handleSelectChange("itemGroupId", val)}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select group (optional)" />
@@ -179,7 +149,7 @@ export function CreateItemForm({
                   variant="ghost"
                   size="sm"
                   className="w-full justify-start"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.preventDefault();
                     // Your create new group logic here
                     console.log("Create new group clicked");

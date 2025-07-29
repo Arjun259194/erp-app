@@ -29,18 +29,14 @@ export const TabView: React.FC<TabViewProps> = ({
   return (
     <Tabs defaultValue={initialTab} className="w-full">
       <TabsList className={tabListClassName}>
-        {tabs.map((tab) => (
-          <TabsTrigger
-            key={tab.key}
-            value={tab.key}
-            className={tabTriggerClassName}
-          >
+        {tabs.map(tab => (
+          <TabsTrigger key={tab.key} value={tab.key} className={tabTriggerClassName}>
             {tab.title}
           </TabsTrigger>
         ))}
       </TabsList>
 
-      {tabs.map((tab) => (
+      {tabs.map(tab => (
         <TabsContent
           key={tab.key}
           value={tab.key}

@@ -37,10 +37,7 @@ export async function acceptRegistractionRequest({
     pass: process.env.EMAIL_TOKEN,
   });
 
-  const loginRedirectURL = new URL(
-    "/auth/login",
-    process.env.NEXT_PUBLIC_APP_URL,
-  );
+  const loginRedirectURL = new URL("/auth/login", process.env.NEXT_PUBLIC_APP_URL);
 
   loginRedirectURL.searchParams.set(
     "message",
@@ -86,10 +83,7 @@ export async function rejectRegistractionRequest({
   });
 
   const mailbody: string = await render(
-    <RejectedRegisterRequest
-      username={request.name}
-      customMessage={customMessage}
-    />,
+    <RejectedRegisterRequest username={request.name} customMessage={customMessage} />,
   );
 
   const mailConfig = await MailBuilder.create()

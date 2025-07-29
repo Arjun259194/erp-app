@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo } from "react";
 
-import type { Prisma } from '@/generated/prisma'; // or '@prisma/client'
+import type { Prisma } from "@/generated/prisma"; // or '@prisma/client'
 
 import { ServerAction } from "@/types";
 
@@ -55,48 +55,37 @@ export type MaterialRequestItemData = Prisma.MaterialRequestItemGetPayload<{
 
 export function useMaterialRequestTable(
   initialMaterialRequests: MaterialRequestData[],
-  fetchMaterialRequestsAction: ServerAction<MaterialRequestData[], void>
+  fetchMaterialRequestsAction: ServerAction<MaterialRequestData[], void>,
 ) {
-  const [materialRequests, setMaterialRequests] = useState<
-    MaterialRequestData[]
-  >(initialMaterialRequests);
+  const [materialRequests, setMaterialRequests] =
+    useState<MaterialRequestData[]>(initialMaterialRequests);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [departmentFilter, setDepartmentFilter] = useState("all");
 
   const refreshMaterialRequests = useCallback(async () => {
-    const updatedMaterialRequests = await fetchMaterialRequestsAction()
+    const updatedMaterialRequests = await fetchMaterialRequestsAction();
     setMaterialRequests(updatedMaterialRequests as any);
   }, [fetchMaterialRequestsAction]);
 
   const filteredMaterialRequests = useMemo(() => {
-    return materialRequests.filter((mr) => {
+    return materialRequests.filter(mr => {
       const matchesSearch =
         mr.requestNumber.toString().includes(search.toLowerCase()) ||
         mr.requester.name.toLowerCase().includes(search.toLowerCase()) ||
         mr.purpose?.toLowerCase().includes(search.toLowerCase());
 
-      const matchesStatus =
-        statusFilter === "all" || mr.status === statusFilter;
+      const matchesStatus = statusFilter === "all" || mr.status === statusFilter;
 
-      const matchesPriority =
-        priorityFilter === "all" || mr.priority === priorityFilter;
+      const matchesPriority = priorityFilter === "all" || mr.priority === priorityFilter;
 
       const matchesDepartment =
         departmentFilter === "all" || mr.department?.id === departmentFilter;
 
-      return (
-        matchesSearch && matchesStatus && matchesPriority && matchesDepartment
-      );
+      return matchesSearch && matchesStatus && matchesPriority && matchesDepartment;
     });
-  }, [
-    materialRequests,
-    search,
-    statusFilter,
-    priorityFilter,
-    departmentFilter,
-  ]);
+  }, [materialRequests, search, statusFilter, priorityFilter, departmentFilter]);
 
   return {
     materialRequests: filteredMaterialRequests,

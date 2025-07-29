@@ -35,8 +35,8 @@ export async function auth(): Promise<[null, AuthMessage] | [User, null]> {
         id: userID,
       },
       include: {
-        companies: true
-      }
+        companies: true,
+      },
     });
   } catch (err) {
     console.log("From auth(): ", err);

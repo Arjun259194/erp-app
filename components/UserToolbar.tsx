@@ -51,19 +51,16 @@ export default function UserToolbar({
       <Input
         placeholder="Search name/email..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={e => setSearch(e.target.value)}
         className="h-8 max-w-sm"
       />
       <div className="flex items-center gap-2">
-        <Select
-          value={roleFilter}
-          onValueChange={(val) => setRoleFilter(val as UserRole | "All")}
-        >
+        <Select value={roleFilter} onValueChange={val => setRoleFilter(val as UserRole | "All")}>
           <SelectTrigger className="h-8 w-[120px]">
             <SelectValue placeholder="Role" />
           </SelectTrigger>
           <SelectContent>
-            {roles.map((role) => (
+            {roles.map(role => (
               <SelectItem key={role} value={role}>
                 {role}
               </SelectItem>
@@ -73,13 +70,13 @@ export default function UserToolbar({
 
         <Select
           value={statusFilter}
-          onValueChange={(val) => setStatusFilter(val as UserStatus | "All")}
+          onValueChange={val => setStatusFilter(val as UserStatus | "All")}
         >
           <SelectTrigger className="h-8 w-[120px]">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
-            {statuses.map((status) => (
+            {statuses.map(status => (
               <SelectItem key={status} value={status}>
                 {status}
               </SelectItem>
