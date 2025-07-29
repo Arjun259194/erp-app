@@ -7,7 +7,7 @@ import { ItemTableHeader } from "./ItemTableHeader";
 import { ItemTableRow } from "./ItemTableRow";
 import { ServerAction } from "@/types";
 import { ItemData, useItemTable } from "@/hook/useItemTable";
-import createItem from "@/app/(authorized)/item/action";
+import createItem from "@/app/(authorized)/stock/item/action";
 
 export function ItemTable({
   items: initialItems,

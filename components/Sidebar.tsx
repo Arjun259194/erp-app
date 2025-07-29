@@ -20,11 +20,14 @@ import {
   KanbanSquare,
   LifeBuoy,
   Settings,
+  ChevronRightIcon,
+  HomeIcon,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Topbar } from "./topbar/Topbar";
 import { User } from "@/generated/prisma";
+import DynamicBreadcrumb from "./DynamicBreadcrumb";
 
 // ✅ Your recursive item type
 export type SideBarItem =
@@ -107,7 +110,7 @@ export default function SideBarLayout({ children, user }: Props) {
           {isOpen ? <ChevronsLeft /> : <ChevronsRight />}
         </Button>
 
-        <h2 className="text-2xl font-semibold text-foreground ml-4">Welcome</h2>
+        <DynamicBreadcrumb />
       </div>
 
       {/* Sidebar + Main */}

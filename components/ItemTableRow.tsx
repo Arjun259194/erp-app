@@ -26,7 +26,7 @@ export function ItemTableRow({ item }: { item: ItemData }) {
         <Input type="checkbox" />
       </TableCell>
       <TableCell className="font-medium">
-        <Link href={`/item/${item.id}`}>{item.name}</Link>
+        <Link href={`/stock/item/${item.id}`}>{item.name}</Link>
       </TableCell>
       <TableCell>
         <Badge className={cn("text-xs", statusColor)}>{item.status}</Badge>{" "}

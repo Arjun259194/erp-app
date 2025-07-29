@@ -8,8 +8,8 @@ export default function page() {
         {
           title: "",
           links: [
-            { label: "Item", href: "/item" },
-            { label: "Material Request", href: "/material-request" },
+            { label: "Item", href: "/stock/item" },
+            { label: "Material Request", href: "/stock/material-request" },
             { label: "Stock Entry", href: "/stock-entry" },
             { label: "Purchase Receipt", href: "/purchase-receipt" },
             { label: "Delivery Note", href: "/delivery-note" },

@@ -17,7 +17,7 @@ export function MaterialRequestTableRow({ materialRequest }: MaterialRequestTabl
       <TableCell>
         <Link
           className="text-blue-600 hover:underline"
-          href={`/material-request/${materialRequest.id}`}
+          href={`/stock/material-request/${materialRequest.id}`}
         >
           View
         </Link>

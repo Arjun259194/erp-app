@@ -8,6 +8,8 @@ import {
   MaterialRequestStatus,
   Priority,
   AccountType,
+  User,
+  UserRole,
 } from "../generated/prisma";
 
 import env from "../lib/env";
@@ -55,8 +57,44 @@ async function main() {
 
   console.log(`✅ Admin created/updated`);
 
-  // 🎭 Generate 20 fake users
+  // Creating 3 Users for testing
 
+  let users = await Promise.all(
+    [
+      {
+        email: "email@gmail.com",
+        name: "tulsidas khan",
+        password: "ttt1112233",
+        role: UserRole.HR,
+      },
+      {
+        email: "email2@gmail.com",
+        name: "joshi mahir",
+        password: "mahir2004",
+        role: UserRole.Manufacturing,
+      },
+      {
+        email: "email3@gmail.com",
+        name: "params parmar",
+        password: "heyparam2003",
+        role: UserRole.Sales,
+      },
+    ].map(async u => {
+      const hashpass = await hasher.hash(u.password);
+      return {
+        ...u,
+        password: hashpass,
+      };
+    }),
+  );
+
+  await prisma.user.createMany({
+    data: [...users],
+  });
+
+  console.log("✅ Users for testing created");
+
+  // 🎭 Generate 20 fake users
   const fakeUsers = Array.from({ length: 20 }).map(() => ({
     name: faker.person.fullName(),
 
