@@ -13,7 +13,7 @@ export default async function page() {
   const [user, error] = await auth()
   if (error) throw new Error(error)
   console.log(user)
-  const companies = user.companies.map(x => x.id)
+  const companies = user.companies.map(x => x.companyId)
   console.log(companies)
   const stockEntries =
     await DB.GetAllStockEntry(companies)
@@ -34,9 +34,9 @@ export default async function page() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {stockEntries.map(se => {
+          {stockEntries.map((se, idx) => {
             return (
-              <TableRow>
+              <TableRow key={idx}>
                 <TableCell>
                   {se.item.name}
                 </TableCell>
