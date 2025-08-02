@@ -1,19 +1,21 @@
-"use client";
+"use client"
 
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { ItemData } from "@/hook/useItemTable";
+import { useForm } from "react-hook-form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Separator } from "@/components/ui/separator"
+import { Button } from "@/components/ui/button"
+import { ItemData } from "@/hook/useItemTable"
 
 type ItemFormProps = {
-  item: ItemData;
-};
+  item: ItemData
+}
 
-export default function ItemForm({ item }: ItemFormProps) {
+export default function ItemForm({
+  item,
+}: ItemFormProps) {
   const {
     register,
     handleSubmit,
@@ -22,40 +24,63 @@ export default function ItemForm({ item }: ItemFormProps) {
     formState: { errors },
   } = useForm<ItemData>({
     defaultValues: item,
-  });
+  })
 
   const onSubmit = (data: ItemData) => {
-    console.log("Submitted:", data);
+    console.log("Submitted:", data)
     // perform save or trigger server action
-  };
+  }
 
   return (
     <section className="p-2">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-6"
+      >
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="sku">SKU</Label>
-            <Input id="sku" {...register("sku")} />
+            <Input
+              id="sku"
+              {...register("sku")}
+            />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
-            <Input id="name" {...register("name")} />
+            <Input
+              id="name"
+              {...register("name")}
+            />
           </div>
 
           <div className="space-y-2 col-span-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea id="description" {...register("description")} />
+            <Label htmlFor="description">
+              Description
+            </Label>
+            <Textarea
+              id="description"
+              {...register("description")}
+            />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="unit">Unit</Label>
-            <Input id="unit" {...register("unit")} />
+            <Input
+              id="unit"
+              {...register("unit")}
+            />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="price">Price</Label>
-            <Input type="number" step="0.01" {...register("price", { valueAsNumber: true })} />
+            <Input
+              type="number"
+              step="0.01"
+              {...register("price", {
+                valueAsNumber: true,
+              })}
+            />
           </div>
         </div>
 
@@ -64,18 +89,33 @@ export default function ItemForm({ item }: ItemFormProps) {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-6">
           {[
             ["isDisabled", "Disabled"],
-            ["allowAlternativeItem", "Allow Alternative Item"],
+            [
+              "allowAlternativeItem",
+              "Allow Alternative Item",
+            ],
             ["maintainStock", "Maintain Stock"],
             ["hasVariants", "Has Variants"],
             ["isFixedAsset", "Is Fixed Asset"],
             ["isZeroRated", "Is Zero Rated"],
             ["isExempt", "Is Exempt"],
           ].map(([key, label]) => (
-            <div key={key} className="flex items-center space-x-2">
+            <div
+              key={key}
+              className="flex items-center space-x-2"
+            >
               <Checkbox
                 id={key}
-                checked={watch(key as keyof ItemData) as boolean}
-                onCheckedChange={checked => setValue(key as keyof ItemData, !!checked)}
+                checked={
+                  watch(
+                    key as keyof ItemData,
+                  ) as boolean
+                }
+                onCheckedChange={checked =>
+                  setValue(
+                    key as keyof ItemData,
+                    !!checked,
+                  )
+                }
               />
               <Label htmlFor={key}>{label}</Label>
             </div>
@@ -86,28 +126,43 @@ export default function ItemForm({ item }: ItemFormProps) {
 
         <div className="grid grid-cols-3 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="overDeliveryAllowance">Over Delivery Allowance (%)</Label>
+            <Label htmlFor="overDeliveryAllowance">
+              Over Delivery Allowance (%)
+            </Label>
             <Input
               id="overDeliveryAllowance"
               type="number"
               step="0.001"
-              {...register("overDeliveryAllowance", { valueAsNumber: true })}
+              {...register(
+                "overDeliveryAllowance",
+                { valueAsNumber: true },
+              )}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="overBillingAllowance">Over Billing Allowance (%)</Label>
+            <Label htmlFor="overBillingAllowance">
+              Over Billing Allowance (%)
+            </Label>
             <Input
               id="overBillingAllowance"
               type="number"
               step="0.001"
-              {...register("overBillingAllowance", { valueAsNumber: true })}
+              {...register(
+                "overBillingAllowance",
+                { valueAsNumber: true },
+              )}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="taxCode">Tax Code</Label>
-            <Input id="taxCode" {...register("taxCode")} />
+            <Label htmlFor="taxCode">
+              Tax Code
+            </Label>
+            <Input
+              id="taxCode"
+              {...register("taxCode")}
+            />
           </div>
         </div>
 
@@ -116,5 +171,5 @@ export default function ItemForm({ item }: ItemFormProps) {
         </div>
       </form>
     </section>
-  );
+  )
 }

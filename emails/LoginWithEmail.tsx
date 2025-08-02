@@ -10,14 +10,17 @@ import {
   Section,
   Hr,
   Preview,
-} from "@react-email/components";
+} from "@react-email/components"
 
 type LoginEmailProps = {
-  username: string;
-  loginUrl: string;
-};
+  username: string
+  loginUrl: string
+}
 
-export default function LoginEmail({ username, loginUrl }: LoginEmailProps) {
+export default function LoginEmail({
+  username,
+  loginUrl,
+}: LoginEmailProps) {
   return (
     <Tailwind>
       <Html>
@@ -26,7 +29,8 @@ export default function LoginEmail({ username, loginUrl }: LoginEmailProps) {
         </Head>
 
         <Preview>
-          Here's your secure login link. Only valid for 10 minutes. Do not share it.
+          Here's your secure login link. Only
+          valid for 10 minutes. Do not share it.
         </Preview>
 
         <Body className="bg-[#f9fafb] text-slate-900 font-sans">
@@ -47,11 +51,15 @@ export default function LoginEmail({ username, loginUrl }: LoginEmailProps) {
               Login to Your Account
             </Text>
 
-            <Text className="text-sm text-slate-700 mb-4">Hi {username},</Text>
+            <Text className="text-sm text-slate-700 mb-4">
+              Hi {username},
+            </Text>
 
             <Text className="text-sm text-slate-700 mb-4 leading-relaxed">
-              We received a request to log in to your account using this email. Click below to
-              continue. This link is only valid for the next 10 minutes.
+              We received a request to log in to
+              your account using this email. Click
+              below to continue. This link is only
+              valid for the next 10 minutes.
             </Text>
 
             {/* CTA Button */}
@@ -64,12 +72,15 @@ export default function LoginEmail({ username, loginUrl }: LoginEmailProps) {
 
             {/* Security Warning */}
             <Text className="text-sm text-slate-700 mt-6 leading-relaxed">
-              ⚠️ This login link is <strong>private</strong>. Do not share or forward it. Only open
-              it on a device you trust.
+              ⚠️ This login link is{" "}
+              <strong>private</strong>. Do not
+              share or forward it. Only open it on
+              a device you trust.
             </Text>
 
             <Text className="text-sm text-slate-700 mt-4">
-              If you didn’t request this login, you can safely ignore this message.
+              If you didn’t request this login,
+              you can safely ignore this message.
             </Text>
 
             <Hr className="my-6 border-slate-200" />
@@ -77,17 +88,22 @@ export default function LoginEmail({ username, loginUrl }: LoginEmailProps) {
             {/* Footer */}
             <Text className="text-xs text-slate-400">
               Need help? Contact us at{" "}
-              <Link href="mailto:support@yourcompany.com" className="text-blue-600 underline">
+              <Link
+                href="mailto:support@yourcompany.com"
+                className="text-blue-600 underline"
+              >
                 support@yourcompany.com
               </Link>
             </Text>
 
             <Text className="text-[11px] text-slate-400 mt-2">
-              © {new Date().getFullYear()} YourCompany Inc. All rights reserved.
+              © {new Date().getFullYear()}{" "}
+              YourCompany Inc. All rights
+              reserved.
             </Text>
           </Container>
         </Body>
       </Html>
     </Tailwind>
-  );
+  )
 }

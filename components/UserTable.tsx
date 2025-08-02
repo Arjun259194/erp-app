@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import {
   Table,
   TableHeader,
@@ -6,28 +6,36 @@ import {
   TableHead,
   TableBody,
   TableCell,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
-import { User } from "@/generated/prisma";
+} from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
+import { Pencil, Trash2 } from "lucide-react"
+import { User } from "@/generated/prisma"
 
 type Props = {
-  users: User[];
-  onEdit: (user: User) => void;
-  onDelete: (id: string) => void;
-};
+  users: User[]
+  onEdit: (user: User) => void
+  onDelete: (id: string) => void
+}
 
-export default function UserTable({ users, onEdit, onDelete }: Props) {
+export default function UserTable({
+  users,
+  onEdit,
+  onDelete,
+}: Props) {
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[160px]">Name</TableHead>
+            <TableHead className="w-[160px]">
+              Name
+            </TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Role</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead className="text-right w-[120px]">Actions</TableHead>
+            <TableHead className="text-right w-[120px]">
+              Actions
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -50,7 +58,9 @@ export default function UserTable({ users, onEdit, onDelete }: Props) {
                   variant="ghost"
                   size="icon"
                   className="h-6 w-6 text-muted-foreground hover:text-red-500"
-                  onClick={() => onDelete(user.id)}
+                  onClick={() =>
+                    onDelete(user.id)
+                  }
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -59,7 +69,10 @@ export default function UserTable({ users, onEdit, onDelete }: Props) {
           ))}
           {users.length === 0 && (
             <TableRow>
-              <TableCell colSpan={5} className="text-center text-muted-foreground py-4">
+              <TableCell
+                colSpan={5}
+                className="text-center text-muted-foreground py-4"
+              >
                 No users found.
               </TableCell>
             </TableRow>
@@ -67,5 +80,5 @@ export default function UserTable({ users, onEdit, onDelete }: Props) {
         </TableBody>
       </Table>
     </div>
-  );
+  )
 }

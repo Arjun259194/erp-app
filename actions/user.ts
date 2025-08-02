@@ -1,9 +1,12 @@
-"use server";
+"use server"
 
-import { UserRole, UserStatus } from "@/generated/prisma";
-import { DB } from "@/lib/database";
-import BcryptPasswordHasher from "@/lib/hash";
-import { z } from "zod";
+import {
+  UserRole,
+  UserStatus,
+} from "@/generated/prisma"
+import { DB } from "@/lib/database"
+import BcryptPasswordHasher from "@/lib/hash"
+import { z } from "zod"
 
 const userRoles = [
   "Admin",
@@ -15,14 +18,14 @@ const userRoles = [
   "Manufacturing",
   "ProjectManager",
   "Support",
-] satisfies [UserRole, ...UserRole[]];
+] satisfies [UserRole, ...UserRole[]]
 
 const CreateSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   password: z.string().min(6),
   role: z.enum(userRoles),
-});
+})
 
 const UpdateSchema = z.object({
   id: z.string().cuid(),
@@ -31,26 +34,36 @@ const UpdateSchema = z.object({
   password: z.string().min(6).optional(),
   role: z.enum(userRoles).optional(),
   status: z
-    .enum(["Active", "Inactive", "Suspended", "Pending"] satisfies [UserStatus, ...UserStatus[]])
+    .enum([
+      "Active",
+      "Inactive",
+      "Suspended",
+      "Pending",
+    ] satisfies [UserStatus, ...UserStatus[]])
     .optional(),
-});
+})
 
-export async function createUser(formdata: FormData) {
+export async function createUser(
+  formdata: FormData,
+) {
   const rawData = {
     name: formdata.get("name"),
     email: formdata.get("email"),
     password: formdata.get("password"),
     role: formdata.get("role"),
-  };
-
-  const result = CreateSchema.safeParse(rawData);
-  if (!result.success) {
-    console.log("failed to parse");
-    console.log("rawData:", Object.fromEntries(formdata.entries()));
-    throw new Error("not valid data");
   }
 
-  const { ...cred } = result.data;
+  const result = CreateSchema.safeParse(rawData)
+  if (!result.success) {
+    console.log("failed to parse")
+    console.log(
+      "rawData:",
+      Object.fromEntries(formdata.entries()),
+    )
+    throw new Error("not valid data")
+  }
+
+  const { ...cred } = result.data
 
   try {
     await DB.CreateUser({
@@ -58,15 +71,17 @@ export async function createUser(formdata: FormData) {
       name: cred.name,
       password: cred.password,
       role: cred.role,
-    });
+    })
   } catch (err) {
-    console.error(err);
-    throw new Error("Something went wrong");
+    console.error(err)
+    throw new Error("Something went wrong")
   }
-  return;
+  return
 }
 
-export async function updateUser(formdata: FormData) {
+export async function updateUser(
+  formdata: FormData,
+) {
   const rawData = {
     id: formdata.get("id"),
     name: formdata.get("name"),
@@ -74,53 +89,72 @@ export async function updateUser(formdata: FormData) {
     password: formdata.get("password"),
     role: formdata.get("role"),
     status: formdata.get("status"),
-  } as Record<string, string | null | undefined>;
+  } as Record<string, string | null | undefined>
 
-  if (rawData.password === null || rawData.password === "") {
-    rawData.password = undefined;
+  if (
+    rawData.password === null ||
+    rawData.password === ""
+  ) {
+    rawData.password = undefined
   }
 
-  console.log("rawData:", Object.fromEntries(formdata.entries()));
+  console.log(
+    "rawData:",
+    Object.fromEntries(formdata.entries()),
+  )
 
-  const result = UpdateSchema.safeParse(rawData);
+  const result = UpdateSchema.safeParse(rawData)
   if (!result.success) {
-    console.log("failed to parse: ", result.error.message);
-    console.log("rawData:", Object.fromEntries(formdata.entries()));
-    throw new Error(result.error.issues[0].message);
+    console.log(
+      "failed to parse: ",
+      result.error.message,
+    )
+    console.log(
+      "rawData:",
+      Object.fromEntries(formdata.entries()),
+    )
+    throw new Error(
+      result.error.issues[0].message,
+    )
   }
 
-  const { id, password, ...cred } = result.data;
+  const { id, password, ...cred } = result.data
 
   const safePassword = password
-    ? await BcryptPasswordHasher.getInstance().hash(password)
-    : undefined;
+    ? await BcryptPasswordHasher.getInstance().hash(
+        password,
+      )
+    : undefined
 
   try {
-    console.log("cred:", cred);
+    console.log("cred:", cred)
     await DB.UpdateUserById(id, {
       ...cred,
       password: safePassword,
-    });
+    })
   } catch (err) {
-    console.error(err);
-    throw new Error("Something went wrong");
+    console.error(err)
+    throw new Error("Something went wrong")
   }
-  return;
+  return
 }
 
-export async function deleteUser(formadat: FormData) {
-  const id = formadat.get("id");
-  if (typeof id !== "string" || !id) throw new Error("Invalid user ID");
+export async function deleteUser(
+  formadat: FormData,
+) {
+  const id = formadat.get("id")
+  if (typeof id !== "string" || !id)
+    throw new Error("Invalid user ID")
 
   try {
-    await DB.DeleteUserById(id);
+    await DB.DeleteUserById(id)
   } catch (err) {
-    console.error(err);
-    throw new Error("Something went wrong");
+    console.error(err)
+    throw new Error("Something went wrong")
   }
-  return;
+  return
 }
 
 export async function fetchUsers() {
-  return await DB.FetchAllUsers();
+  return await DB.FetchAllUsers()
 }

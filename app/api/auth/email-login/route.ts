@@ -1,35 +1,53 @@
-import { JWToken } from "@/lib/auth/jwt";
-import { DB } from "@/lib/database";
-import { gotError } from "@/lib/redirects";
-import { NextRequest, NextResponse } from "next/server";
+import { JWToken } from "@/lib/auth/jwt"
+import { DB } from "@/lib/database"
+import { gotError } from "@/lib/redirects"
+import {
+  NextRequest,
+  NextResponse,
+} from "next/server"
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
+  const searchParams =
+    request.nextUrl.searchParams
 
-  const token = searchParams.get("token");
+  const token = searchParams.get("token")
   if (!token)
     return gotError(
       "Not valid URL",
       "The link which you are using for logging in is not a valid url",
-    );
+    )
 
-  const payload = JWToken.getInstance().deserialize(token);
-  if (!payload) return gotError("Token expired", "Your link is expired and can't be used");
+  const payload =
+    JWToken.getInstance().deserialize(token)
+  if (!payload)
+    return gotError(
+      "Token expired",
+      "Your link is expired and can't be used",
+    )
 
-  const user = await DB.FindUserById(payload.data.id);
+  const user = await DB.FindUserById(
+    payload.data.id,
+  )
   if (!user)
     return gotError(
       "User not found",
       "You are not in our database records, check you email or try again",
-    );
+    )
 
-  const req = await DB.FindLatestEmailLoginRequest(user.id);
+  const req =
+    await DB.FindLatestEmailLoginRequest(user.id)
 
-  if (!req) return gotError("Request expired", "Your email login request is expired, try again");
+  if (!req)
+    return gotError(
+      "Request expired",
+      "Your email login request is expired, try again",
+    )
 
-  const exp = Date.now() + 60 * 60 * 24;
+  const exp = Date.now() + 60 * 60 * 24
 
-  const response = NextResponse.redirect(new URL("/home", request.url));
+  const response = NextResponse.redirect(
+    new URL("/home", request.url),
+  )
 
   response.cookies.set({
     name: "authToken",
@@ -39,9 +57,12 @@ export async function GET(request: NextRequest) {
     path: "/",
     maxAge: exp,
     expires: new Date(exp),
-  });
+  })
 
-  await DB.ClearAllPastEmailLoginRequest(req.id, user.id);
+  await DB.ClearAllPastEmailLoginRequest(
+    req.id,
+    user.id,
+  )
 
-  return response;
+  return response
 }

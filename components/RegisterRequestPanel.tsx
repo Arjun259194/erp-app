@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Table,
   TableBody,
@@ -8,9 +8,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/table"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import {
   Sheet,
   SheetContent,
@@ -18,23 +18,45 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Eye, EyeOff, RotateCcw } from "lucide-react";
-import { PublicRegistrationRequest } from "@/generated/prisma";
-import { ServerAction } from "@/types";
-import { usePublicRegistrationPanel } from "@/hook/usePublicRegistraction";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+} from "@/components/ui/sheet"
+import { Textarea } from "@/components/ui/textarea"
+import { Badge } from "@/components/ui/badge"
+import {
+  Eye,
+  EyeOff,
+  RotateCcw,
+} from "lucide-react"
+import { PublicRegistrationRequest } from "@/generated/prisma"
+import { ServerAction } from "@/types"
+import { usePublicRegistrationPanel } from "@/hook/usePublicRegistraction"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select"
 
 interface Props {
-  requests: PublicRegistrationRequest[];
-  acceptRequestAction: ServerAction<void, { id: string; customMessage?: string }>;
-  rejectRequestAction: ServerAction<void, { id: string; customMessage?: string }>;
-  fetchRequests: ServerAction<PublicRegistrationRequest[], void>;
+  requests: PublicRegistrationRequest[]
+  acceptRequestAction: ServerAction<
+    void,
+    { id: string; customMessage?: string }
+  >
+  rejectRequestAction: ServerAction<
+    void,
+    { id: string; customMessage?: string }
+  >
+  fetchRequests: ServerAction<
+    PublicRegistrationRequest[],
+    void
+  >
 }
 
-export default function PublicRegistrationTable({ requests, ...actions }: Props) {
+export default function PublicRegistrationTable({
+  requests,
+  ...actions
+}: Props) {
   const {
     refresh,
     search,
@@ -54,7 +76,7 @@ export default function PublicRegistrationTable({ requests, ...actions }: Props)
   } = usePublicRegistrationPanel({
     requests,
     ...actions,
-  });
+  })
 
   return (
     <div className="space-y-4">
@@ -62,21 +84,39 @@ export default function PublicRegistrationTable({ requests, ...actions }: Props)
         <Input
           placeholder="Search by name or email..."
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={e =>
+            setSearch(e.target.value)
+          }
           className="max-w-sm"
         />
-        <Select value={filter} onValueChange={val => setFilter(val as any)}>
+        <Select
+          value={filter}
+          onValueChange={val =>
+            setFilter(val as any)
+          }
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Filter status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="All">All</SelectItem>
-            <SelectItem value="Pending">Pending</SelectItem>
-            <SelectItem value="Approved">Approved</SelectItem>
-            <SelectItem value="Rejected">Rejected</SelectItem>
+            <SelectItem value="All">
+              All
+            </SelectItem>
+            <SelectItem value="Pending">
+              Pending
+            </SelectItem>
+            <SelectItem value="Approved">
+              Approved
+            </SelectItem>
+            <SelectItem value="Rejected">
+              Rejected
+            </SelectItem>
           </SelectContent>
         </Select>
-        <Button onClick={() => refresh()} size="icon">
+        <Button
+          onClick={() => refresh()}
+          size="icon"
+        >
           <RotateCcw className="h-4 w-4 mr-1" />
         </Button>
       </div>
@@ -90,7 +130,9 @@ export default function PublicRegistrationTable({ requests, ...actions }: Props)
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="text-right">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -117,9 +159,9 @@ export default function PublicRegistrationTable({ requests, ...actions }: Props)
                       <Button
                         size="sm"
                         onClick={() => {
-                          setSelected(r);
-                          setMessage("");
-                          setShowPassword(false);
+                          setSelected(r)
+                          setMessage("")
+                          setShowPassword(false)
                         }}
                       >
                         View
@@ -127,39 +169,61 @@ export default function PublicRegistrationTable({ requests, ...actions }: Props)
                     </SheetTrigger>
                     <SheetContent>
                       <SheetHeader>
-                        <SheetTitle>Review Registration</SheetTitle>
+                        <SheetTitle>
+                          Review Registration
+                        </SheetTitle>
                         <SheetDescription>
-                          Review and take action on this registration request.
+                          Review and take action
+                          on this registration
+                          request.
                         </SheetDescription>
                       </SheetHeader>
                       {selected && (
                         <div className="mt-2 p-5 space-y-6">
                           <div className="grid gap-3">
                             <div>
-                              <p className="text-sm text-muted-foreground">Name</p>
-                              <p className="font-medium text-base">{selected.name}</p>
+                              <p className="text-sm text-muted-foreground">
+                                Name
+                              </p>
+                              <p className="font-medium text-base">
+                                {selected.name}
+                              </p>
                             </div>
                             <div>
-                              <p className="text-sm text-muted-foreground">Email</p>
-                              <p className="font-medium text-base">{selected.email}</p>
+                              <p className="text-sm text-muted-foreground">
+                                Email
+                              </p>
+                              <p className="font-medium text-base">
+                                {selected.email}
+                              </p>
                             </div>
                             <div>
-                              <p className="text-sm text-muted-foreground">Reason</p>
+                              <p className="text-sm text-muted-foreground">
+                                Reason
+                              </p>
                               <p className="font-medium text-base whitespace-pre-line">
                                 {selected.reason}
                               </p>
                             </div>
                             <div className="flex items-center gap-2">
                               <div className="grow">
-                                <p className="text-sm text-muted-foreground">Password</p>
+                                <p className="text-sm text-muted-foreground">
+                                  Password
+                                </p>
                                 <p className="font-mono text-base">
-                                  {showPassword ? selected.password : "••••••••"}
+                                  {showPassword
+                                    ? selected.password
+                                    : "••••••••"}
                                 </p>
                               </div>
                               <Button
                                 size="icon"
                                 variant="ghost"
-                                onClick={() => setShowPassword(prev => !prev)}
+                                onClick={() =>
+                                  setShowPassword(
+                                    prev => !prev,
+                                  )
+                                }
                                 className="mt-6"
                               >
                                 {showPassword ? (
@@ -172,30 +236,51 @@ export default function PublicRegistrationTable({ requests, ...actions }: Props)
                           </div>
 
                           <div className="grid gap-2">
-                            <p className="text-sm text-muted-foreground">Custom Message</p>
+                            <p className="text-sm text-muted-foreground">
+                              Custom Message
+                            </p>
                             <Textarea
                               placeholder="Write a custom message for approval or rejection..."
                               value={message}
-                              onChange={e => setMessage(e.target.value)}
+                              onChange={e =>
+                                setMessage(
+                                  e.target.value,
+                                )
+                              }
                             />
                           </div>
 
                           <div className="flex flex-wrap gap-3 pt-2">
                             <Button
-                              disabled={selected.state !== "Pending"}
+                              disabled={
+                                selected.state !==
+                                "Pending"
+                              }
                               variant="outline"
-                              onClick={acceptRequest}
+                              onClick={
+                                acceptRequest
+                              }
                             >
                               Accept
                             </Button>
                             <Button
                               variant="destructive"
-                              disabled={selected.state !== "Pending"}
-                              onClick={rejectRequest}
+                              disabled={
+                                selected.state !==
+                                "Pending"
+                              }
+                              onClick={
+                                rejectRequest
+                              }
                             >
                               Reject
                             </Button>
-                            <Button variant="ghost" onClick={() => setMessage("")}>
+                            <Button
+                              variant="ghost"
+                              onClick={() =>
+                                setMessage("")
+                              }
+                            >
                               Clear
                             </Button>
                           </div>
@@ -210,7 +295,7 @@ export default function PublicRegistrationTable({ requests, ...actions }: Props)
         </Table>
       )}
     </div>
-  );
+  )
 }
 
 export function RegistrationTableSkeleton() {
@@ -221,7 +306,9 @@ export function RegistrationTableSkeleton() {
           <TableHead>Name</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
+          <TableHead className="text-right">
+            Actions
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -243,5 +330,5 @@ export function RegistrationTableSkeleton() {
         ))}
       </TableBody>
     </Table>
-  );
+  )
 }

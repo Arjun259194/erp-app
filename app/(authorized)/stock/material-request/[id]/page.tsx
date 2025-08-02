@@ -1,8 +1,13 @@
-import { notFound } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { notFound } from "next/navigation"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 import {
   CalendarDays,
   User,
@@ -12,97 +17,126 @@ import {
   FileText,
   ShoppingCart,
   Wrench,
-} from "lucide-react";
-import { prisma } from "@/lib/database";
-import { MaterialRequestStatus, Priority } from "@/generated/prisma";
+} from "lucide-react"
+import { prisma } from "@/lib/database"
+import {
+  MaterialRequestStatus,
+  Priority,
+} from "@/generated/prisma"
 
 async function getMaterialRequest(id: string) {
-  const materialRequest = await prisma.materialRequest.findUnique({
-    where: { id },
-    include: {
-      company: true,
-      requester: true,
-      department: true,
-      costCenter: true,
-      items: {
-        include: {
-          item: true,
+  const materialRequest =
+    await prisma.materialRequest.findUnique({
+      where: { id },
+      include: {
+        company: true,
+        requester: true,
+        department: true,
+        costCenter: true,
+        items: {
+          include: {
+            item: true,
+          },
         },
+        workOrders: true,
+        purchaseOrders: true,
       },
-      workOrders: true,
-      purchaseOrders: true,
-    },
-  });
+    })
 
   if (!materialRequest) {
-    notFound();
+    notFound()
   }
 
-  return materialRequest;
+  return materialRequest
 }
 
-async function updateMaterialRequestStatus(formData: FormData) {
-  "use server";
+async function updateMaterialRequestStatus(
+  formData: FormData,
+) {
+  "use server"
 
-  const id = formData.get("id") as string;
-  const status = formData.get("status") as string;
+  const id = formData.get("id") as string
+  const status = formData.get("status") as string
 
   await prisma.materialRequest.update({
     where: { id },
     data: { status: status as any },
-  });
+  })
 }
 
-function getStatusColor(status: MaterialRequestStatus) {
+function getStatusColor(
+  status: MaterialRequestStatus,
+) {
   switch (status) {
     case "DRAFT":
-      return "bg-gray-100 text-gray-800";
+      return "bg-gray-100 text-gray-800"
     case "SUBMITTED":
-      return "bg-blue-100 text-blue-800";
+      return "bg-blue-100 text-blue-800"
     case "APPROVED":
-      return "bg-green-100 text-green-800";
+      return "bg-green-100 text-green-800"
     case "ORDERED":
-      return "bg-purple-100 text-purple-800";
+      return "bg-purple-100 text-purple-800"
     case "RECEIVED":
-      return "bg-emerald-100 text-emerald-800";
+      return "bg-emerald-100 text-emerald-800"
     case "CANCELLED":
-      return "bg-red-100 text-red-800";
+      return "bg-red-100 text-red-800"
     default:
-      return "bg-gray-100 text-gray-800";
+      return "bg-gray-100 text-gray-800"
   }
 }
 
 function getPriorityColor(priority: Priority) {
   switch (priority) {
     case "LOW":
-      return "bg-green-100 text-green-800";
+      return "bg-green-100 text-green-800"
     case "MEDIUM":
-      return "bg-yellow-100 text-yellow-800";
+      return "bg-yellow-100 text-yellow-800"
     case "HIGH":
-      return "bg-orange-100 text-orange-800";
+      return "bg-orange-100 text-orange-800"
     case "URGENT":
-      return "bg-red-100 text-red-800";
+      return "bg-red-100 text-red-800"
     default:
-      return "bg-gray-100 text-gray-800";
+      return "bg-gray-100 text-gray-800"
   }
 }
 
-export default async function page({ params }: { params: { id: string } }) {
-  const materialRequest = await getMaterialRequest(params.id);
+export default async function page({
+  params,
+}: {
+  params: { id: string }
+}) {
+  const materialRequest =
+    await getMaterialRequest(params.id)
 
   return (
     <div className="container mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Material Request #{materialRequest.requestNumber}</h1>
+          <h1 className="text-3xl font-bold">
+            Material Request #
+            {materialRequest.requestNumber}
+          </h1>
           <p className="text-muted-foreground">
-            Created on {new Date(materialRequest.createdAt).toLocaleDateString()}
+            Created on{" "}
+            {new Date(
+              materialRequest.createdAt,
+            ).toLocaleDateString()}
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge className={getStatusColor(materialRequest.status)}>{materialRequest.status}</Badge>
-          <Badge className={getPriorityColor(materialRequest.priority)}>
+          <Badge
+            className={getStatusColor(
+              materialRequest.status,
+            )}
+          >
+            {materialRequest.status}
+          </Badge>
+          <Badge
+            className={getPriorityColor(
+              materialRequest.priority,
+            )}
+          >
             {materialRequest.priority}
           </Badge>
         </div>
@@ -124,25 +158,43 @@ export default async function page({ params }: { params: { id: string } }) {
                 <div className="flex items-center gap-3">
                   <CalendarDays className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Required Date</p>
+                    <p className="text-sm text-muted-foreground">
+                      Required Date
+                    </p>
                     <p className="font-medium">
-                      {new Date(materialRequest.requiredDate).toLocaleDateString()}
+                      {new Date(
+                        materialRequest.requiredDate,
+                      ).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <User className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Requester</p>
-                    <p className="font-medium">{materialRequest.requester.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Requester
+                    </p>
+                    <p className="font-medium">
+                      {
+                        materialRequest.requester
+                          .name
+                      }
+                    </p>
                   </div>
                 </div>
                 {materialRequest.department && (
                   <div className="flex items-center gap-3">
                     <Building2 className="h-4 w-4 text-muted-foreground" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Department</p>
-                      <p className="font-medium">{materialRequest.department.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        Department
+                      </p>
+                      <p className="font-medium">
+                        {
+                          materialRequest
+                            .department.name
+                        }
+                      </p>
                     </div>
                   </div>
                 )}
@@ -150,8 +202,15 @@ export default async function page({ params }: { params: { id: string } }) {
                   <div className="flex items-center gap-3">
                     <DollarSign className="h-4 w-4 text-muted-foreground" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Cost Center</p>
-                      <p className="font-medium">{materialRequest.costCenter.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        Cost Center
+                      </p>
+                      <p className="font-medium">
+                        {
+                          materialRequest
+                            .costCenter.name
+                        }
+                      </p>
                     </div>
                   </div>
                 )}
@@ -160,8 +219,12 @@ export default async function page({ params }: { params: { id: string } }) {
                 <>
                   <Separator />
                   <div>
-                    <p className="text-sm text-muted-foreground mb-2">Purpose</p>
-                    <p className="text-sm">{materialRequest.purpose}</p>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Purpose
+                    </p>
+                    <p className="text-sm">
+                      {materialRequest.purpose}
+                    </p>
                   </div>
                 </>
               )}
@@ -173,44 +236,75 @@ export default async function page({ params }: { params: { id: string } }) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Package className="h-5 w-5" />
-                Requested Items ({materialRequest.items.length})
+                Requested Items (
+                {materialRequest.items.length})
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {materialRequest.items.length > 0 ? (
+              {materialRequest.items.length >
+              0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left py-3 px-4">SKU</th>
-                        <th className="text-left py-3 px-4">Item Name</th>
-                        <th className="text-left py-3 px-4">Quantity</th>
-                        <th className="text-left py-3 px-4">UOM</th>
-                        <th className="text-left py-3 px-4">Unit Price</th>
-                        <th className="text-left py-3 px-4">Description</th>
+                        <th className="text-left py-3 px-4">
+                          SKU
+                        </th>
+                        <th className="text-left py-3 px-4">
+                          Item Name
+                        </th>
+                        <th className="text-left py-3 px-4">
+                          Quantity
+                        </th>
+                        <th className="text-left py-3 px-4">
+                          UOM
+                        </th>
+                        <th className="text-left py-3 px-4">
+                          Unit Price
+                        </th>
+                        <th className="text-left py-3 px-4">
+                          Description
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {materialRequest.items.map(requestItem => (
-                        <tr key={requestItem.id} className="border-b">
-                          <td className="py-3 px-4 font-mono text-sm">
-                            {requestItem.item?.sku || "N/A"}
-                          </td>
-                          <td className="py-3 px-4 font-medium">
-                            {requestItem.item?.name || "N/A"}
-                          </td>
-                          <td className="py-3 px-4">{requestItem.quantity}</td>
-                          <td className="py-3 px-4">{requestItem.uom}</td>
-                          <td className="py-3 px-4">
-                            ${requestItem.item?.price?.toFixed(2) || "0.00"}
-                          </td>
-                          <td className="py-3 px-4 text-sm text-muted-foreground">
-                            {requestItem.description ||
-                              requestItem.item?.description ||
-                              "No description"}
-                          </td>
-                        </tr>
-                      ))}
+                      {materialRequest.items.map(
+                        requestItem => (
+                          <tr
+                            key={requestItem.id}
+                            className="border-b"
+                          >
+                            <td className="py-3 px-4 font-mono text-sm">
+                              {requestItem.item
+                                ?.sku || "N/A"}
+                            </td>
+                            <td className="py-3 px-4 font-medium">
+                              {requestItem.item
+                                ?.name || "N/A"}
+                            </td>
+                            <td className="py-3 px-4">
+                              {
+                                requestItem.quantity
+                              }
+                            </td>
+                            <td className="py-3 px-4">
+                              {requestItem.uom}
+                            </td>
+                            <td className="py-3 px-4">
+                              $
+                              {requestItem.item?.price?.toFixed(
+                                2,
+                              ) || "0.00"}
+                            </td>
+                            <td className="py-3 px-4 text-sm text-muted-foreground">
+                              {requestItem.description ||
+                                requestItem.item
+                                  ?.description ||
+                                "No description"}
+                            </td>
+                          </tr>
+                        ),
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -223,58 +317,91 @@ export default async function page({ params }: { params: { id: string } }) {
           </Card>
 
           {/* Related Documents */}
-          {(materialRequest.purchaseOrders.length > 0 || materialRequest.workOrders.length > 0) && (
+          {(materialRequest.purchaseOrders
+            .length > 0 ||
+            materialRequest.workOrders.length >
+              0) && (
             <Card>
               <CardHeader>
-                <CardTitle>Related Documents</CardTitle>
+                <CardTitle>
+                  Related Documents
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {materialRequest.purchaseOrders.length > 0 && (
+                {materialRequest.purchaseOrders
+                  .length > 0 && (
                   <div>
                     <h4 className="flex items-center gap-2 font-medium mb-3">
                       <ShoppingCart className="h-4 w-4" />
-                      Purchase Orders ({materialRequest.purchaseOrders.length})
+                      Purchase Orders (
+                      {
+                        materialRequest
+                          .purchaseOrders.length
+                      }
+                      )
                     </h4>
                     <div className="grid gap-2">
-                      {materialRequest.purchaseOrders.map(po => (
-                        <div
-                          key={po.id}
-                          className="flex items-center justify-between p-3 border rounded-lg"
-                        >
-                          <div>
-                            <p className="font-medium">PO #{po.id}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {new Date(po.createdAt).toLocaleDateString()}
-                            </p>
+                      {materialRequest.purchaseOrders.map(
+                        po => (
+                          <div
+                            key={po.id}
+                            className="flex items-center justify-between p-3 border rounded-lg"
+                          >
+                            <div>
+                              <p className="font-medium">
+                                PO #{po.id}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                {new Date(
+                                  po.createdAt,
+                                ).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <Badge variant="outline">
+                              {po.status}
+                            </Badge>
                           </div>
-                          <Badge variant="outline">{po.status}</Badge>
-                        </div>
-                      ))}
+                        ),
+                      )}
                     </div>
                   </div>
                 )}
 
-                {materialRequest.workOrders.length > 0 && (
+                {materialRequest.workOrders
+                  .length > 0 && (
                   <div>
                     <h4 className="flex items-center gap-2 font-medium mb-3">
                       <Wrench className="h-4 w-4" />
-                      Work Orders ({materialRequest.workOrders.length})
+                      Work Orders (
+                      {
+                        materialRequest.workOrders
+                          .length
+                      }
+                      )
                     </h4>
                     <div className="grid gap-2">
-                      {materialRequest.workOrders.map(wo => (
-                        <div
-                          key={wo.id}
-                          className="flex items-center justify-between p-3 border rounded-lg"
-                        >
-                          <div>
-                            <p className="font-medium">WO #{wo.id}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {new Date(wo.createdAt).toLocaleDateString()}
-                            </p>
+                      {materialRequest.workOrders.map(
+                        wo => (
+                          <div
+                            key={wo.id}
+                            className="flex items-center justify-between p-3 border rounded-lg"
+                          >
+                            <div>
+                              <p className="font-medium">
+                                WO #{wo.id}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                {new Date(
+                                  wo.createdAt,
+                                ).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <Badge variant="outline">
+                              {wo.status}
+                            </Badge>
                           </div>
-                          <Badge variant="outline">{wo.status}</Badge>
-                        </div>
-                      ))}
+                        ),
+                      )}
                     </div>
                   </div>
                 )}
@@ -291,18 +418,36 @@ export default async function page({ params }: { params: { id: string } }) {
               <CardTitle>Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <form action={updateMaterialRequestStatus}>
-                <input type="hidden" name="id" value={materialRequest.id} />
+              <form
+                action={
+                  updateMaterialRequestStatus
+                }
+              >
+                <input
+                  type="hidden"
+                  name="id"
+                  value={materialRequest.id}
+                />
 
-                {materialRequest.status === "DRAFT" && (
-                  <Button name="status" value="SUBMITTED" className="w-full">
+                {materialRequest.status ===
+                  "DRAFT" && (
+                  <Button
+                    name="status"
+                    value="SUBMITTED"
+                    className="w-full"
+                  >
                     Submit Request
                   </Button>
                 )}
 
-                {materialRequest.status === "SUBMITTED" && (
+                {materialRequest.status ===
+                  "SUBMITTED" && (
                   <>
-                    <Button name="status" value="APPROVED" className="w-full mb-2">
+                    <Button
+                      name="status"
+                      value="APPROVED"
+                      className="w-full mb-2"
+                    >
                       Approve Request
                     </Button>
                     <Button
@@ -316,14 +461,24 @@ export default async function page({ params }: { params: { id: string } }) {
                   </>
                 )}
 
-                {materialRequest.status === "APPROVED" && (
-                  <Button name="status" value="ORDERED" className="w-full">
+                {materialRequest.status ===
+                  "APPROVED" && (
+                  <Button
+                    name="status"
+                    value="ORDERED"
+                    className="w-full"
+                  >
                     Mark as Ordered
                   </Button>
                 )}
 
-                {materialRequest.status === "ORDERED" && (
-                  <Button name="status" value="RECEIVED" className="w-full">
+                {materialRequest.status ===
+                  "ORDERED" && (
+                  <Button
+                    name="status"
+                    value="RECEIVED"
+                    className="w-full"
+                  >
                     Mark as Received
                   </Button>
                 )}
@@ -334,24 +489,38 @@ export default async function page({ params }: { params: { id: string } }) {
           {/* Request Info */}
           <Card>
             <CardHeader>
-              <CardTitle>Request Information</CardTitle>
+              <CardTitle>
+                Request Information
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div>
-                <p className="text-sm text-muted-foreground">Company</p>
-                <p className="font-medium">{materialRequest.company.name}</p>
+                <p className="text-sm text-muted-foreground">
+                  Company
+                </p>
+                <p className="font-medium">
+                  {materialRequest.company.name}
+                </p>
               </div>
               <Separator />
               <div>
-                <p className="text-sm text-muted-foreground">Created</p>
+                <p className="text-sm text-muted-foreground">
+                  Created
+                </p>
                 <p className="font-medium">
-                  {new Date(materialRequest.createdAt).toLocaleString()}
+                  {new Date(
+                    materialRequest.createdAt,
+                  ).toLocaleString()}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Last Updated</p>
+                <p className="text-sm text-muted-foreground">
+                  Last Updated
+                </p>
                 <p className="font-medium">
-                  {new Date(materialRequest.updatedAt).toLocaleString()}
+                  {new Date(
+                    materialRequest.updatedAt,
+                  ).toLocaleString()}
                 </p>
               </div>
             </CardContent>
@@ -359,5 +528,5 @@ export default async function page({ params }: { params: { id: string } }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

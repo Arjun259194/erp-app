@@ -1,7 +1,9 @@
-import { prisma } from ".";
-import BcryptPasswordHasher from "../hash";
+import { prisma } from "."
+import BcryptPasswordHasher from "../hash"
 
-type UserUpdateParam = Parameters<typeof prisma.user.update>[0]["data"];
+type UserUpdateParam = Parameters<
+  typeof prisma.user.update
+>[0]["data"]
 
 export const user = {
   async FetchAllUsers() {
@@ -13,13 +15,16 @@ export const user = {
           },
         ],
       },
-    });
+    })
   },
-  async UpdateUserById(id: string, update: UserUpdateParam) {
+  async UpdateUserById(
+    id: string,
+    update: UserUpdateParam,
+  ) {
     await prisma.user.update({
       where: { id },
       data: update,
-    });
+    })
   },
 
   async FindUserById(id: string) {
@@ -27,7 +32,7 @@ export const user = {
       where: {
         id,
       },
-    });
+    })
   },
 
   async FindUserByEmail(email: string) {
@@ -35,24 +40,31 @@ export const user = {
       where: {
         email,
       },
-    });
+    })
   },
 
-  async CreateUser(data: Parameters<typeof prisma.user.create>[0]["data"]) {
-    const hasher = BcryptPasswordHasher.getInstance();
-    const hashPass = await hasher.hash(data.password);
+  async CreateUser(
+    data: Parameters<
+      typeof prisma.user.create
+    >[0]["data"],
+  ) {
+    const hasher =
+      BcryptPasswordHasher.getInstance()
+    const hashPass = await hasher.hash(
+      data.password,
+    )
 
     return await prisma.user.create({
       data: {
         ...data,
         password: hashPass,
       },
-    });
+    })
   },
 
   async DeleteUserById(id: string) {
     await prisma.user.delete({
       where: { id },
-    });
+    })
   },
-};
+}

@@ -1,4 +1,4 @@
-import { prisma } from ".";
+import { prisma } from "."
 
 export const session = {
   async GetSession(userId: string) {
@@ -6,14 +6,14 @@ export const session = {
       where: {
         userId,
       },
-    });
+    })
   },
 
   async RevokeSession(userId: string) {
     return await prisma.session.update({
       data: { revoked: true },
       where: { userId: userId },
-    });
+    })
   },
 
   async ClearPastSessions(userId: string) {
@@ -21,7 +21,7 @@ export const session = {
       where: {
         userId,
       },
-    });
+    })
   },
 
   async RenewOrCreateSession(
@@ -29,16 +29,19 @@ export const session = {
     newToken: string,
     expiresInMs = 1000 * 60 * 60 * 24 * 7,
   ) {
-    const now = new Date();
-    const expiresAt = new Date(Date.now() + expiresInMs);
+    const now = new Date()
+    const expiresAt = new Date(
+      Date.now() + expiresInMs,
+    )
 
-    const existing = await prisma.session.findFirst({
-      where: {
-        userId,
-        revoked: false,
-        expiresAt: { gt: now },
-      },
-    });
+    const existing =
+      await prisma.session.findFirst({
+        where: {
+          userId,
+          revoked: false,
+          expiresAt: { gt: now },
+        },
+      })
 
     if (existing) {
       return await prisma.session.update({
@@ -47,7 +50,7 @@ export const session = {
           token: newToken,
           expiresAt,
         },
-      });
+      })
     }
 
     return await prisma.session.create({
@@ -56,6 +59,6 @@ export const session = {
         userId,
         expiresAt,
       },
-    });
+    })
   },
-};
+}

@@ -1,10 +1,10 @@
-"use server";
-import { cookies } from "next/headers";
+"use server"
+import { cookies } from "next/headers"
 
 export default async function logout() {
-  const cookiestore = await cookies();
+  const cookiestore = await cookies()
 
-  if (!cookiestore.has("authToken")) return;
+  if (!cookiestore.has("authToken")) return
 
   cookiestore.set({
     name: "authToken",
@@ -12,7 +12,7 @@ export default async function logout() {
     path: "/",
     expires: new Date(0),
     httpOnly: true,
-  });
+  })
 
-  return;
+  return
 }

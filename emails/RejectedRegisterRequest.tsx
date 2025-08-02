@@ -10,14 +10,17 @@ import {
   Section,
   Hr,
   Preview,
-} from "@react-email/components";
+} from "@react-email/components"
 
 export type RejectedRegisterRequestProps = {
-  username: string;
-  customMessage?: string;
-};
+  username: string
+  customMessage?: string
+}
 
-export function RejectedRegisterRequest({ username, customMessage }: RejectedRegisterRequestProps) {
+export function RejectedRegisterRequest({
+  username,
+  customMessage,
+}: RejectedRegisterRequestProps) {
   return (
     <Tailwind>
       <Html>
@@ -25,7 +28,10 @@ export function RejectedRegisterRequest({ username, customMessage }: RejectedReg
           <title>Registration Rejected</title>
         </Head>
 
-        <Preview>We're sorry, your registration request was not approved.</Preview>
+        <Preview>
+          We're sorry, your registration request
+          was not approved.
+        </Preview>
 
         <Body className="bg-[#f9fafb] text-slate-900 font-sans">
           <Container className="max-w-md mx-auto bg-white p-6 border border-slate-200 rounded-md shadow-sm">
@@ -43,36 +49,48 @@ export function RejectedRegisterRequest({ username, customMessage }: RejectedReg
               Registration Rejected ❌
             </Text>
 
-            <Text className="text-sm text-slate-700 mb-4">Hi {username},</Text>
+            <Text className="text-sm text-slate-700 mb-4">
+              Hi {username},
+            </Text>
 
             <Text className="text-sm text-slate-700 mb-4 leading-relaxed">
-              We regret to inform you that your registration request has not been approved at this
-              time.
+              We regret to inform you that your
+              registration request has not been
+              approved at this time.
             </Text>
 
             {customMessage && (
-              <Text className="text-sm text-slate-700 mb-4 italic">{customMessage}</Text>
+              <Text className="text-sm text-slate-700 mb-4 italic">
+                {customMessage}
+              </Text>
             )}
 
             <Text className="text-sm text-slate-700 mt-4">
-              If you believe this is a mistake or have questions, feel free to reach out to us.
+              If you believe this is a mistake or
+              have questions, feel free to reach
+              out to us.
             </Text>
 
             <Hr className="my-6 border-slate-200" />
 
             <Text className="text-xs text-slate-400">
               Contact us at{" "}
-              <Link href="mailto:support@yourcompany.com" className="text-blue-600 underline">
+              <Link
+                href="mailto:support@yourcompany.com"
+                className="text-blue-600 underline"
+              >
                 support@yourcompany.com
               </Link>
             </Text>
 
             <Text className="text-[11px] text-slate-400 mt-2">
-              © {new Date().getFullYear()} YourCompany Inc. All rights reserved.
+              © {new Date().getFullYear()}{" "}
+              YourCompany Inc. All rights
+              reserved.
             </Text>
           </Container>
         </Body>
       </Html>
     </Tailwind>
-  );
+  )
 }

@@ -1,25 +1,42 @@
-"use client";
+"use client"
 
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ItemTableHeader } from "./ItemTableHeader";
-import { ItemTableRow } from "./ItemTableRow";
-import { ServerAction } from "@/types";
-import { ItemData, useItemTable } from "@/hook/useItemTable";
-import createItem from "@/app/(authorized)/stock/item/action";
+import { TooltipProvider } from "@/components/ui/tooltip"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { ItemTableHeader } from "./ItemTableHeader"
+import { ItemTableRow } from "./ItemTableRow"
+import { ServerAction } from "@/types"
+import {
+  ItemData,
+  useItemTable,
+} from "@/hook/useItemTable"
+import createItem from "@/app/(authorized)/stock/item/action"
 
 export function ItemTable({
   items: initialItems,
   groups,
   fetchItemsAction: fetchItems,
 }: {
-  items: ItemData[];
-  groups: { id: string; name: string }[];
-  fetchItemsAction: ServerAction<ItemData[], void>;
+  items: ItemData[]
+  groups: { id: string; name: string }[]
+  fetchItemsAction: ServerAction<ItemData[], void>
 }) {
-  const { items, search, setSearch, filterStatus, setFilterStatus, group, setGroup, refreshItems } =
-    useItemTable(initialItems, fetchItems);
+  const {
+    items,
+    search,
+    setSearch,
+    filterStatus,
+    setFilterStatus,
+    group,
+    setGroup,
+    refreshItems,
+  } = useItemTable(initialItems, fetchItems)
 
   return (
     <TooltipProvider>
@@ -52,12 +69,15 @@ export function ItemTable({
             </TableHeader>
             <TableBody>
               {items.map(item => (
-                <ItemTableRow key={item.id} item={item} />
+                <ItemTableRow
+                  key={item.id}
+                  item={item}
+                />
               ))}
             </TableBody>
           </Table>
         </ScrollArea>
       </div>
     </TooltipProvider>
-  );
+  )
 }

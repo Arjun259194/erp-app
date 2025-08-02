@@ -1,6 +1,6 @@
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { SectionGrid } from "@/components/SectionGrid";
+import { auth } from "@/lib/auth"
+import { redirect } from "next/navigation"
+import { SectionGrid } from "@/components/SectionGrid"
 
 const groups = [
   {
@@ -9,18 +9,39 @@ const groups = [
       {
         title: "Your Shortcuts",
         links: [
-          { label: "Accounts Settings", href: "/settings/accounts" },
-          { label: "Stock Settings", href: "/settings/stock" },
-          { label: "Buying Settings", href: "/settings/buying" },
+          {
+            label: "Accounts Settings",
+            href: "/settings/accounts",
+          },
+          {
+            label: "Stock Settings",
+            href: "/settings/stock",
+          },
+          {
+            label: "Buying Settings",
+            href: "/settings/buying",
+          },
         ],
       },
       {
         title: "Module Settings",
         links: [
-          { label: "Accounts Settings", href: "/settings/accounts" },
-          { label: "Stock Settings", href: "/settings/stock" },
-          { label: "Buying Settings", href: "/settings/buying" },
-          { label: "CRM Settings", href: "/settings/CRM" },
+          {
+            label: "Accounts Settings",
+            href: "/settings/accounts",
+          },
+          {
+            label: "Stock Settings",
+            href: "/settings/stock",
+          },
+          {
+            label: "Buying Settings",
+            href: "/settings/buying",
+          },
+          {
+            label: "CRM Settings",
+            href: "/settings/CRM",
+          },
         ],
       },
     ],
@@ -30,7 +51,12 @@ const groups = [
     sections: [
       {
         title: "Email / Notifications",
-        links: [{ label: "Email Template", href: "/settings/email-template" }],
+        links: [
+          {
+            label: "Email Template",
+            href: "/settings/email-template",
+          },
+        ],
       },
     ],
   },
@@ -39,11 +65,16 @@ const groups = [
     sections: [
       {
         title: "Workflow",
-        links: [{ label: "Workflow Action", href: "/settings/workflow" }],
+        links: [
+          {
+            label: "Workflow Action",
+            href: "/settings/workflow",
+          },
+        ],
       },
     ],
   },
-];
+]
 
 const adminGroups = [
   {
@@ -52,17 +83,35 @@ const adminGroups = [
       {
         title: "System settings",
         links: [
-          { href: "/settings/system", label: "system settings" },
-          { label: "User managment", href: "/settings/user" },
+          {
+            href: "/settings/system",
+            label: "system settings",
+          },
+          {
+            label: "User managment",
+            href: "/settings/user",
+          },
         ],
       },
     ],
   },
-];
+]
 
 export default async function page() {
-  const [user, error] = await auth();
-  if (error !== null) redirect("/auth/login?message=" + encodeURIComponent(error));
+  const [user, error] = await auth()
+  if (error !== null)
+    redirect(
+      "/auth/login?message=" +
+        encodeURIComponent(error),
+    )
 
-  return <SectionGrid groups={[...(user ? adminGroups : []), ...groups]} pageTitle="Settings" />;
+  return (
+    <SectionGrid
+      groups={[
+        ...(user ? adminGroups : []),
+        ...groups,
+      ]}
+      pageTitle="Settings"
+    />
+  )
 }

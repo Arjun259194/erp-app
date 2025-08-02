@@ -1,5 +1,5 @@
-import { PrismaClient } from "@/generated/prisma";
-import { prisma } from ".";
+import { PrismaClient } from "@/generated/prisma"
+import { prisma } from "."
 
 export const items = {
   async GetAllItems() {
@@ -7,23 +7,24 @@ export const items = {
       include: {
         ItemGroup: true,
       },
-    });
+    })
   },
 
-  async UpdateItemById<T extends Parameters<PrismaClient["item"]["update"]>[0]["data"]>(
-    id: string,
-    data: T,
-  ) {
+  async UpdateItemById<
+    T extends Parameters<
+      PrismaClient["item"]["update"]
+    >[0]["data"],
+  >(id: string, data: T) {
     return await prisma.item.update({
       where: {
         id,
       },
       data,
-    });
+    })
   },
 
   async GetAllItemGroups() {
-    return await prisma.itemGroup.findMany();
+    return await prisma.itemGroup.findMany()
   },
 
   async NewItemGroup(name: string) {
@@ -31,13 +32,17 @@ export const items = {
       data: {
         name,
       },
-    });
+    })
   },
 
-  async NewItem(data: Parameters<PrismaClient["item"]["create"]>[0]["data"]) {
+  async NewItem(
+    data: Parameters<
+      PrismaClient["item"]["create"]
+    >[0]["data"],
+  ) {
     return await prisma.item.create({
       data,
-    });
+    })
   },
 
   async GetItemById(id: string) {
@@ -48,7 +53,7 @@ export const items = {
       include: {
         ItemGroup: true,
       },
-    });
+    })
   },
 
   async GetItemGroupById(id: string) {
@@ -56,6 +61,6 @@ export const items = {
       where: {
         id,
       },
-    });
+    })
   },
-};
+}
